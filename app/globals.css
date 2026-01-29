@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -20,7 +24,112 @@
 }
 
 body {
-  background: var(--background);
+  background: radial-gradient(circle at top, #020617 0, #020617 40%, #000000 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Floating bubbles on home page */
+.floating-bubble {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0;
+  background: radial-gradient(circle at 30% 20%, #81f4e1 0, #020617 45%, #020617 100%);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow: 0 0 60px rgba(129, 244, 225, 0.3);
+  color: #e5e7eb;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  transition: box-shadow 160ms ease-out, border-color 160ms ease-out, transform 80ms ease-out;
+}
+
+.floating-bubble:active {
+  cursor: grabbing;
+  transform: scale(1.02);
+}
+
+.floating-bubble .bubble-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.9rem;
+}
+
+.floating-bubble .bubble-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-bubble .bubble-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.floating-bubble:hover {
+  transform: translate3d(0, -2px, 0) scale(1.02);
+  box-shadow: 0 0 60px rgba(129, 244, 225, 0.3);
+  border-color: rgba(129, 244, 225, 0.7);
+}
+
+/* Individual paths + animations */
+.bubble-about {
+  top: 20%;
+  right: 5%;
+  animation: floatAbout 18s ease-in-out infinite alternate;
+}
+
+.bubble-projects {
+  top: 55%;
+  right: 2%;
+  animation: floatProjects 22s ease-in-out infinite alternate;
+}
+
+.bubble-blog {
+  top: 35%;
+  right: 22%;
+  animation: floatBlog 20s ease-in-out infinite alternate;
+}
+
+@keyframes floatAbout {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-12px, -18px, 0);
+  }
+  100% {
+    transform: translate3d(8px, 10px, 0);
+  }
+}
+
+@keyframes floatProjects {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-16px, 10px, 0);
+  }
+  100% {
+    transform: translate3d(6px, -14px, 0);
+  }
+}
+
+@keyframes floatBlog {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-10px, -16px, 0);
+  }
+  100% {
+    transform: translate3d(14px, 4px, 0);
+  }
 }
