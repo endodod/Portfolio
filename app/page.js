@@ -3,14 +3,56 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+function getSpotifyPlaylistId() {
+  const raw = process.env.NEXT_PUBLIC_SPOTIFY_PLAYLIST_ID;
+  if (!raw) return null;
+  const m = raw.match(/playlist\/([a-zA-Z0-9]+)/);
+  return m ? m[1] : raw.trim();
+}
+
 export default function Home() {
   const router = useRouter();
   const [consoleText, setConsoleText] = useState("");
   const [queue, setQueue] = useState([]);
   const [command, setCommand] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [gitLog, setGitLog] = useState([]);
+  const [time, setTime] = useState("");
+  const [githubActivity, setGithubActivity] = useState(null);
   const outputWrapperRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Live clock
+  useEffect(() => {
+    const tick = () =>
+      setTime(
+        new Date().toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        })
+      );
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Fetch last 5 git commits from this repo
+  useEffect(() => {
+    fetch("/api/git-log")
+      .then((r) => r.json())
+      .then(({ commits }) => setGitLog(commits || []))
+      .catch(() => setGitLog([]));
+  }, []);
+
+  // Fetch latest GitHub activity
+  useEffect(() => {
+    fetch("/api/github-activity")
+      .then((r) => r.json())
+      .then((data) => setGithubActivity(data))
+      .catch(() => setGithubActivity(null));
+  }, []);
 
   // Auto-run whoami at startup
   useEffect(() => {
@@ -121,28 +163,47 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Music player */}
+        {/* Music player - Spotify embed when playlist configured */}
         <section
           className="desktop-window desktop-window--player"
           aria-hidden="true"
         >
           <div className="desktop-header">
-            <span className="desktop-title">now-playing.mp3</span>
+            <span className="desktop-title">
+              {process.env.NEXT_PUBLIC_SPOTIFY_PLAYLIST_ID ? "spotify" : "now-playing.mp3"}
+            </span>
           </div>
           <div className="desktop-body desktop-body--player">
-            <div className="player-track">lofi-focus-loop-07</div>
-            <div className="player-bar">
-              <span className="player-time">01:12</span>
-              <span className="player-rail">
-                <span className="player-progress" />
-              </span>
-              <span className="player-time">03:48</span>
-            </div>
-            <div className="player-controls">
-              <span>⏮</span>
-              <span>⏯</span>
-              <span>⏭</span>
-            </div>
+            {getSpotifyPlaylistId() ? (
+              <div className="player-embed-wrap">
+                <iframe
+                  src={`https://open.spotify.com/embed/playlist/${getSpotifyPlaylistId()}?utm_source=generator`}
+                  width="100%"
+                  height="152"
+                  frameBorder="0"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"
+                  title="Spotify playlist"
+                  className="player-embed"
+                />
+              </div>
+            ) : (
+              <>
+                <div className="player-track">lofi-focus-loop-07</div>
+                <div className="player-bar">
+                  <span className="player-time">01:12</span>
+                  <span className="player-rail">
+                    <span className="player-progress" />
+                  </span>
+                  <span className="player-time">03:48</span>
+                </div>
+                <div className="player-controls">
+                  <span>⏮</span>
+                  <span>⏯</span>
+                  <span>⏭</span>
+                </div>
+              </>
+            )}
           </div>
         </section>
 
@@ -160,9 +221,38 @@ export default function Home() {
               <span className="desktop-line">Zürich, Switzerland</span>
               <span className="desktop-line"> </span>
               <span className="desktop-line">mail: paul@example.com</span>
-              <span className="desktop-line">github: github.com/paul-kuehn</span>
+              <span className="desktop-line">github: github.com/{process.env.NEXT_PUBLIC_GITHUB_USER || "im24a-kuehnp"}</span>
               <span className="desktop-line">linkedin: linkedin.com/in/paul-kuehn</span>
             </pre>
+          </div>
+        </section>
+
+        {/* Currently working on (from GitHub) */}
+        <section
+          className="desktop-window desktop-window--activity"
+          aria-hidden="true"
+        >
+          <div className="desktop-header">
+            <span className="desktop-title">currently working on</span>
+          </div>
+          <div className="desktop-body desktop-body--activity">
+            {githubActivity?.repo && githubActivity?.message ? (
+              <>
+                <a
+                  href={`https://github.com/${githubActivity.repo}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="activity-repo"
+                >
+                  {githubActivity.repo}
+                </a>
+                <span className="activity-message">{githubActivity.message}</span>
+              </>
+            ) : githubActivity?.error ? (
+              <span className="activity-fallback">—</span>
+            ) : (
+              <span className="activity-fallback">loading…</span>
+            )}
           </div>
         </section>
 
@@ -176,34 +266,34 @@ export default function Home() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">a4f9c1e add console home</span>
-              <span className="desktop-line">9b72d88 tweak orbit layout</span>
-              <span className="desktop-line">3170c42 init portfolio</span>
+              {gitLog.length > 0 ? (
+                gitLog.map((line, i) => (
+                  <span
+                    key={i}
+                    className={`desktop-line${i === 0 ? " text-green" : ""}`}
+                  >
+                    {line}
+                  </span>
+                ))
+              ) : (
+                <span className="desktop-line">loading…</span>
+              )}
             </pre>
           </div>
         </section>
 
-        {/* Clock / news / weather */}
+        {/* Clock */}
         <section
           className="desktop-window desktop-window--status"
           aria-hidden="true"
         >
           <div className="desktop-header">
-            <span className="desktop-title">status-center</span>
+            <span className="desktop-title">clock</span>
           </div>
-          <div className="desktop-body desktop-body--status">
-            <div className="status-row">
-              <span>time</span>
-              <span>14:32</span>
-            </div>
-            <div className="status-row">
-              <span>weather</span>
-              <span>12°C · clear</span>
-            </div>
-            <div className="status-row">
-              <span>headline</span>
-              <span>new build deployed to prod</span>
-            </div>
+          <div className="desktop-body desktop-body--clock">
+            <time dateTime={new Date().toISOString()} className="clock-time">
+              {time}
+            </time>
           </div>
         </section>
 
