@@ -93,6 +93,7 @@ a {
   overflow: hidden;
   position: relative;
   z-index: 10;
+  animation: console-open 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 /* Background desktop-style windows */
@@ -151,23 +152,13 @@ a {
 .desktop-window--player {
   top: 12%;
   left: -70px;
-  width: 300px;
   transform: rotate(-4deg);
-}
-
-.player-embed-wrap {
-  border-radius: 0.35rem;
-  overflow: hidden;
-}
-
-.player-embed {
-  display: block;
 }
 
 .desktop-window--notes {
   top: 6%;
-  left: 50%;
-  transform: translateX(-50%) rotate(1deg);
+  right: -30px;
+  transform: rotate(2deg);
   opacity: 0.88;
   background: rgba(8, 12, 22, 0.95);
   box-shadow: 0 20px 55px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(63, 63, 70, 0.5);
@@ -183,40 +174,6 @@ a {
   bottom: -16px;
   left: 28%;
   transform: rotate(1deg);
-}
-
-.desktop-window--activity {
-  top: 18%;
-  right: -100px;
-  width: 260px;
-  transform: rotate(1.5deg);
-}
-
-.desktop-body--activity {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.activity-repo {
-  font-size: 0.78rem;
-  color: #4ade80;
-  text-decoration: none;
-}
-
-.activity-repo:hover {
-  text-decoration: underline;
-}
-
-.activity-message {
-  font-size: 0.72rem;
-  color: rgba(209, 213, 219, 0.88);
-  line-height: 1.35;
-}
-
-.activity-fallback {
-  font-size: 0.72rem;
-  color: rgba(148, 163, 184, 0.7);
 }
 
 .desktop-header {
@@ -310,20 +267,6 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-}
-
-.desktop-body--clock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.75rem 1rem;
-}
-
-.clock-time {
-  font-variant-numeric: tabular-nums;
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
-  color: rgba(226, 232, 240, 0.95);
 }
 
 .status-row {
@@ -507,6 +450,18 @@ a {
 }
 
 /* Animations */
+@keyframes console-open {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
 @keyframes star-drift {
   from {
     transform: translate3d(0, 0, 0);
