@@ -18,6 +18,8 @@ const projects = [
     stack: ["JavaScript", "HTML", "CSS"],
     github: "github.com/endodod/BlackJack",
     githubUrl: "https://github.com/endodod/BlackJack",
+    live: "blackjack.paulkuehn.ch",
+    liveUrl: "https://blackjack.paulkuehn.ch",
     status: "stable",
   },
   {
@@ -27,8 +29,8 @@ const projects = [
     stack: ["Next.js", "React", "CSS"],
     github: "github.com/endodod/Portfolio",
     githubUrl: "https://github.com/endodod/Portfolio",
-    live: "portfolio-endodods-projects.vercel.app",
-    liveUrl: "https://portfolio-endodods-projects.vercel.app",
+    live: "paulkuehn.ch",
+    liveUrl: "https://paulkuehn.ch",
     status: "active",
   },
 ];
