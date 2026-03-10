@@ -482,6 +482,147 @@ a {
   }
 }
 
+/* ── About page ─────────────────────────────── */
+
+.desktop-window--about-skills {
+  top: 8%;
+  left: -50px;
+  transform: rotate(-2.5deg);
+  opacity: 0.85;
+  background: rgba(8, 12, 22, 0.95);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(63, 63, 70, 0.5);
+}
+
+.desktop-window--about-notes {
+  top: 5%;
+  right: -20px;
+  transform: rotate(2.5deg);
+  opacity: 0.88;
+  background: rgba(8, 12, 22, 0.95);
+  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(63, 63, 70, 0.5);
+}
+
+.desktop-window--about-git {
+  bottom: 4%;
+  right: -25px;
+  transform: rotate(3deg);
+}
+
+.about-window {
+  width: 100%;
+  max-width: 680px;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(31, 41, 55, 0.95);
+  background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.08), transparent 55%),
+    radial-gradient(circle at 120% -10%, rgba(56, 189, 248, 0.12), transparent 55%),
+    rgba(3, 7, 18, 0.96);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  animation: console-open 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.about-body {
+  padding: 1.2rem 1.4rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.88rem;
+  line-height: 1.65;
+}
+
+.about-file-header {
+  margin-bottom: 0.6rem;
+}
+
+.about-comment {
+  display: block;
+  color: rgba(148, 163, 184, 0.7);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.about-section {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.about-section .about-comment {
+  margin-bottom: 0.25rem;
+  color: rgba(129, 244, 225, 0.65);
+}
+
+.about-field {
+  display: flex;
+  align-items: baseline;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.about-key {
+  color: rgba(148, 163, 184, 0.9);
+  min-width: 9rem;
+  flex-shrink: 0;
+}
+
+.about-sep {
+  color: rgba(63, 63, 70, 0.9);
+  margin-right: 0.6rem;
+}
+
+.about-value {
+  color: #e5e7eb;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.about-value--accent {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.about-value--link {
+  color: rgba(129, 244, 225, 0.85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(129, 244, 225, 0.3);
+}
+
+.about-tag {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(63, 63, 70, 0.7);
+  background: rgba(15, 23, 42, 0.8);
+  color: rgba(187, 247, 208, 0.9);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.about-tag--cert {
+  border-color: rgba(129, 244, 225, 0.25);
+  color: rgba(129, 244, 225, 0.85);
+  background: rgba(129, 244, 225, 0.05);
+}
+
+.about-nav {
+  margin-top: 1.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+/* ── End About page ──────────────────────────── */
+
 /* Responsive tweaks */
 @media (max-width: 960px) {
   .home {
