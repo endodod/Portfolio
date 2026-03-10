@@ -11,9 +11,12 @@ export default function Home() {
   const [isTyping, setIsTyping] = useState(false);
   const outputWrapperRef = useRef(null);
   const inputRef = useRef(null);
+  const hasInit = useRef(false);
 
   // Auto-run whoami at startup
   useEffect(() => {
+    if (hasInit.current) return;
+    hasInit.current = true;
     runCommand("whoami");
   }, []);
 
@@ -42,7 +45,7 @@ export default function Home() {
         setQueue((prev) => prev.slice(1));
         if (onComplete) onComplete();
       }
-    }, 20);
+    }, 8);
 
     return () => {
       clearInterval(interval);
@@ -119,7 +122,7 @@ export default function Home() {
 
     const entry = `paul @ portfolio ~ $ ${cmd}\n${response}\n`;
     const queueItem = redirect
-      ? { text: entry, onComplete: () => setTimeout(() => router.push(redirect), 500) }
+      ? { text: entry, onComplete: () => router.push(redirect) }
       : entry;
     setQueue((prev) => [...prev, queueItem]);
     inputRef.current?.focus();
