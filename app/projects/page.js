@@ -1,11 +1,16 @@
 "use client";
-import Link from "next/link";
+import Console from "@/components/Console";
 import { projects } from "@/content/projects";
+
+const QUICK_COMMANDS = [
+  { label: "Home", command: "cd ~" },
+  { label: "About Me", command: "cat about-me.txt" },
+];
 
 export default function ProjectsPage() {
   return (
     <main className="home console">
-      <div className="home-shell">
+      <div className="home-shell home-shell--stack">
 
         {/* Background decorative windows */}
         <section className="desktop-window desktop-window--proj-langs" aria-hidden="true">
@@ -68,6 +73,7 @@ export default function ProjectsPage() {
               <span className="about-comment"># ──────────────────────────────────────</span>
             </div>
 
+            <div className="proj-grid">
             {projects.map((p) => (
               <div className="proj-entry" key={p.name}>
                 <div className="proj-entry-header">
@@ -119,17 +125,11 @@ export default function ProjectsPage() {
                 </div>
               </div>
             ))}
-
-            <div className="console-links">
-              <span className="console-comment"># quick commands</span>
-              <div className="console-links-row">
-                <Link href="/" className="console-link">Home</Link>
-                <Link href="/about" className="console-link">About Me</Link>
-              </div>
             </div>
           </div>
         </section>
 
+        <Console quickCommands={QUICK_COMMANDS} />
       </div>
     </main>
   );

@@ -1,13 +1,18 @@
 "use client";
-import Link from "next/link";
+import Console from "@/components/Console";
 import { profile } from "@/content/profile";
 
 const { name, role, location, school, contact, stack } = profile;
 
+const QUICK_COMMANDS = [
+  { label: "Home", command: "cd ~" },
+  { label: "My Projects", command: "cd my-projects/" },
+];
+
 export default function AboutPage() {
   return (
     <main className="home console">
-      <div className="home-shell">
+      <div className="home-shell home-shell--stack">
 
         {/* Background decorative windows */}
         <section className="desktop-window desktop-window--about-skills" aria-hidden="true">
@@ -74,30 +79,53 @@ export default function AboutPage() {
               <span className="about-comment"># ──────────────────────────────────────</span>
             </div>
 
-            <div className="about-section">
-              <span className="about-comment">## identity</span>
-              <div className="about-field">
-                <span className="about-key">name</span>
-                <span className="about-sep">:</span>
-                <span className="about-value about-value--accent">{name}</span>
+            {/* identity + contact side by side */}
+            <div className="about-top-row">
+              <div className="about-section">
+                <span className="about-comment">## identity</span>
+                <div className="about-field">
+                  <span className="about-key">name</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value about-value--accent">{name}</span>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">role</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value">{role}</span>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">location</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value">{location}</span>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">school</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value">{school}</span>
+                </div>
               </div>
-              <div className="about-field">
-                <span className="about-key">role</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">{role}</span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">location</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">{location}</span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">school</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">{school}</span>
+
+              <div className="about-section">
+                <span className="about-comment">## contact</span>
+                <div className="about-field">
+                  <span className="about-key">email</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value">{contact.email}</span>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">github</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value about-value--link">{contact.github}</span>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">linkedin</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value about-value--link">{contact.linkedin}</span>
+                </div>
               </div>
             </div>
 
+            {/* stack full width below */}
             <div className="about-section">
               <span className="about-comment">## stack</span>
               <div className="about-field">
@@ -136,35 +164,10 @@ export default function AboutPage() {
                 </span>
               </div>
             </div>
-
-            <div className="about-section">
-              <span className="about-comment">## contact</span>
-              <div className="about-field">
-                <span className="about-key">email</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">{contact.email}</span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">github</span>
-                <span className="about-sep">:</span>
-                <span className="about-value about-value--link">{contact.github}</span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">linkedin</span>
-                <span className="about-sep">:</span>
-                <span className="about-value about-value--link">{contact.linkedin}</span>
-              </div>
-            </div>
-
-            <div className="console-links">
-              <span className="console-comment"># quick commands</span>
-              <div className="console-links-row">
-                <Link href="/" className="console-link">Home</Link>
-                <Link href="/projects" className="console-link">My Projects</Link>
-              </div>
-            </div>
           </div>
         </section>
+
+        <Console quickCommands={QUICK_COMMANDS} />
       </div>
     </main>
   );

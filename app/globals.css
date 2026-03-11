@@ -33,7 +33,7 @@ body {
   color: var(--text);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .app-body::before {
@@ -66,11 +66,19 @@ a {
 
 .home-shell {
   width: 100%;
-  max-width: 960px;
+  max-width: 980px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+}
+
+.home-shell--stack {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
 }
 
 /* Console themed home */
@@ -93,7 +101,15 @@ a {
   overflow: hidden;
   position: relative;
   z-index: 10;
+  cursor: text;
+  outline: none;
   animation: console-open 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.console-window:focus-visible {
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(129, 244, 225, 0.35);
 }
 
 /* Background desktop-style windows */
@@ -353,43 +369,6 @@ a {
   color: var(--accent);
 }
 
-.console-input {
-  margin-top: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-}
-
-.console-input-prompt {
-  white-space: nowrap;
-  color: rgba(148, 163, 184, 0.9);
-}
-
-.console-input-field {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #e5e7eb;
-  font: inherit;
-  padding: 0.18rem 0.35rem;
-  border-radius: 0.35rem;
-}
-
-.console-input-field::placeholder {
-  color: var(--text-muted);
-  opacity: 0.6;
-}
-
-.console-input-field:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.console-input-field[readonly] {
-  cursor: default;
-}
 
 .console-links {
   margin-top: 1.4rem;
@@ -510,7 +489,7 @@ a {
 
 .about-window {
   width: 100%;
-  max-width: 680px;
+  max-width: 900px;
   border-radius: 0.9rem;
   border: 1px solid rgba(31, 41, 55, 0.95);
   background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.08), transparent 55%),
@@ -526,18 +505,28 @@ a {
 }
 
 .about-body {
-  padding: 1.2rem 1.4rem 1.5rem;
+  padding: 0.9rem 1.4rem 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
   font-size: 0.88rem;
-  line-height: 1.65;
+  line-height: 1.55;
+}
+
+.about-top-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.about-top-row .about-key {
+  min-width: 6rem;
 }
 
 .about-file-header {
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.3rem;
 }
 
 .about-comment {
@@ -548,7 +537,7 @@ a {
 }
 
 .about-section {
-  margin-top: 0.9rem;
+  margin-top: 0.6rem;
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
@@ -654,7 +643,7 @@ a {
 
 .projects-window {
   width: 100%;
-  max-width: 680px;
+  max-width: 900px;
   border-radius: 0.9rem;
   border: 1px solid rgba(31, 41, 55, 0.95);
   background: radial-gradient(circle at 0 0, rgba(34, 197, 94, 0.08), transparent 55%),
@@ -670,34 +659,38 @@ a {
 }
 
 .projects-body {
-  padding: 1.2rem 1.4rem 1.5rem;
+  padding: 0.9rem 1.4rem 1.1rem;
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  font-size: 0.88rem;
-  line-height: 1.65;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.proj-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.6rem;
 }
 
 .proj-entry {
-  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(63, 63, 70, 0.25);
-}
-
-.proj-entry:last-of-type {
-  border-bottom: none;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(63, 63, 70, 0.25);
+  border-radius: 0.5rem;
+  background: rgba(15, 23, 42, 0.4);
 }
 
 .proj-entry-header {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
 }
 
 .proj-dir {
@@ -714,8 +707,8 @@ a {
 .proj-fields {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  padding-left: 0.5rem;
+  gap: 0.05rem;
+  padding-left: 0.4rem;
 }
 
 .proj-fields .about-field {
@@ -725,6 +718,7 @@ a {
 
 .proj-fields .about-key {
   padding-top: 0.05rem;
+  min-width: 7rem;
 }
 
 .proj-fields .about-value {
