@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:api.github.com)",
-      "Bash(grep -r \"paul\\\\|contact\\\\|email\\\\|github\\\\|linkedin\" /c/Users/anmel/GithubRepos/Portfolio --include=\"*.json\" --include=\"*.env\" --include=\"*.txt\" --include=\"*.md\" 2>/dev/null | head -50)"
+      "Bash(grep -r \"paul\\\\|contact\\\\|email\\\\|github\\\\|linkedin\" /c/Users/anmel/GithubRepos/Portfolio --include=\"*.json\" --include=\"*.env\" --include=\"*.txt\" --include=\"*.md\" 2>/dev/null | head -50)",
+      "Bash(git config:*)"
     ]
   }
 }
