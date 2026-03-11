@@ -10,7 +10,7 @@ export const profile = {
   school: "IMS Zürich",
 
   contact: {
-    email: "paul.kuehn@mailbox.org",
+    email: "paul.kuehn@mailbox",
     github: "github.com/endodod",
     githubUrl: "https://github.com/endodod",
     github_user: "endodod",
