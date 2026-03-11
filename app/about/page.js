@@ -139,30 +139,21 @@ export default function AboutPage() {
             </div>
 
             <div className="about-section">
-              <span className="about-comment">## interests</span>
-              <div className="about-field">
-                <span className="about-key">tech</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">web dev, system design, open source</span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">hobbies</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">music, gaming, hiking</span>
-              </div>
-            </div>
-
-            <div className="about-section">
               <span className="about-comment">## contact</span>
-              <div className="about-field">
-                <span className="about-key">github</span>
-                <span className="about-sep">:</span>
-                <span className="about-value about-value--link">github.com/im24a-kuehnp</span>
-              </div>
               <div className="about-field">
                 <span className="about-key">email</span>
                 <span className="about-sep">:</span>
-                <span className="about-value">paul@example.com</span>
+                <span className="about-value">paul.kuehn@mailbox.org</span>
+              </div>
+              <div className="about-field">
+                <span className="about-key">github</span>
+                <span className="about-sep">:</span>
+                <span className="about-value about-value--link">github.com/endodod</span>
+              </div>
+              <div className="about-field">
+                <span className="about-key">linkedin</span>
+                <span className="about-sep">:</span>
+                <span className="about-value about-value--link">linkedin.com/in/paul-kühn</span>
               </div>
             </div>
 

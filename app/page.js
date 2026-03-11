@@ -9,6 +9,8 @@ export default function Home() {
   const [queue, setQueue] = useState([]);
   const [command, setCommand] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [time, setTime] = useState("");
+  const [gitLog, setGitLog] = useState(["loading..."]);
   const outputWrapperRef = useRef(null);
   const inputRef = useRef(null);
   const hasInit = useRef(false);
@@ -18,6 +20,25 @@ export default function Home() {
     if (hasInit.current) return;
     hasInit.current = true;
     runCommand("whoami");
+  }, []);
+
+  // Realtime clock
+  useEffect(() => {
+    const tick = () => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Fetch git log from GitHub
+  useEffect(() => {
+    fetch("/api/git-log")
+      .then((r) => r.json())
+      .then((d) => setGitLog(d.commits || ["(no data)"]))
+      .catch(() => setGitLog(["(unavailable)"]));
   }, []);
 
   // Auto-scroll to bottom when console output changes
@@ -194,9 +215,9 @@ export default function Home() {
               <span className="desktop-line">Paul Kühn</span>
               <span className="desktop-line">Zürich, Switzerland</span>
               <span className="desktop-line"> </span>
-              <span className="desktop-line">mail: paul@example.com</span>
-              <span className="desktop-line">github: github.com/paul-kuehn</span>
-              <span className="desktop-line">linkedin: linkedin.com/in/paul-kuehn</span>
+              <span className="desktop-line">mail: paul.kuehn@mailbox.org</span>
+              <span className="desktop-line">github: github.com/endodod</span>
+              <span className="desktop-line">linkedin: linkedin.com/in/paul-kühn</span>
             </pre>
           </div>
         </section>
@@ -211,9 +232,9 @@ export default function Home() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">a4f9c1e add console home</span>
-              <span className="desktop-line">9b72d88 tweak orbit layout</span>
-              <span className="desktop-line">3170c42 init portfolio</span>
+              {gitLog.map((line, i) => (
+                <span key={i} className={`desktop-line${i === 0 ? " text-green" : ""}`}>{line}</span>
+              ))}
             </pre>
           </div>
         </section>
@@ -229,7 +250,7 @@ export default function Home() {
           <div className="desktop-body desktop-body--status">
             <div className="status-row">
               <span>time</span>
-              <span>14:32</span>
+              <span>{time || "—"}</span>
             </div>
             <div className="status-row">
               <span>weather</span>

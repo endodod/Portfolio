@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const GITHUB_USER = process.env.NEXT_PUBLIC_GITHUB_USER || process.env.GITHUB_USER || "im24a-kuehnp";
+const GITHUB_USER = process.env.NEXT_PUBLIC_GITHUB_USER || process.env.GITHUB_USER || "endodod";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 export async function GET() {
