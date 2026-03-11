@@ -4,6 +4,10 @@ import { profile } from "@/content/profile";
 
 const { name, role, location, school, contact, stack } = profile;
 
+const ABOUT_FILES = {
+  "contact.txt": { text: "opening contact.txt...", redirect: "/contact" },
+};
+
 const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
   { label: "My Projects", command: "cd my-projects/" },
@@ -161,7 +165,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <Console quickCommands={QUICK_COMMANDS} autoRun={false} />
+        <Console quickCommands={QUICK_COMMANDS} autoRun={false} files={ABOUT_FILES} dirs={{}} />
       </div>
     </main>
   );

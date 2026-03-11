@@ -380,9 +380,10 @@ a {
 
 .console-cursor {
   display: inline-block;
-  margin-left: 2px;
+  border-bottom: 2px solid var(--accent);
   animation: cursor-blink 1s steps(2, start) infinite;
-  color: var(--accent);
+  color: inherit;
+  min-width: 0.6ch;
 }
 
 

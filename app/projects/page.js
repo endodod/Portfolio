@@ -7,6 +7,13 @@ const QUICK_COMMANDS = [
   { label: "About Me", command: "cat about-me.txt" },
 ];
 
+const PROJECT_FILES = Object.fromEntries(
+  projects.map((p) => {
+    const filename = p.dir.replace(/\/$/, "") + ".txt";
+    return [filename, { text: `opening readme: ${p.github}#readme`, redirect: `${p.githubUrl}#readme` }];
+  })
+);
+
 export default function ProjectsPage() {
   return (
     <main className="home home--fixed console">
@@ -123,7 +130,7 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        <Console quickCommands={QUICK_COMMANDS} autoRun={false} />
+        <Console quickCommands={QUICK_COMMANDS} autoRun={false} files={PROJECT_FILES} dirs={{}} />
       </div>
     </main>
   );
