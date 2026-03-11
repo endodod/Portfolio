@@ -1,5 +1,8 @@
 "use client";
 import Link from "next/link";
+import { profile } from "@/content/profile";
+
+const { name, role, location, school, contact, stack } = profile;
 
 export default function AboutPage() {
   return (
@@ -14,10 +17,10 @@ export default function AboutPage() {
           <div className="desktop-body">
             <pre>
               <span className="desktop-line text-green">{"{"}</span>
-              <span className="desktop-line">{"  \"languages\": [\"TS\", \"Python\"],"}</span>
-              <span className="desktop-line">{"  \"frameworks\": [\"Next.js\", \"Tailwind\"],"}</span>
-              <span className="desktop-line">{"  \"db\": [\"MySQL\"],"}</span>
-              <span className="desktop-line">{"  \"tools\": [\"git\", \"GitHub\"]"}</span>
+              <span className="desktop-line">{`  "languages": [${stack.languages.map(l => `"${l}"`).join(", ")}],`}</span>
+              <span className="desktop-line">{`  "frameworks": [${stack.frameworks.map(f => `"${f}"`).join(", ")}],`}</span>
+              <span className="desktop-line">{`  "db": [${stack.databases.map(d => `"${d}"`).join(", ")}],`}</span>
+              <span className="desktop-line">{`  "tools": [${stack.tools.map(t => `"${t}"`).join(", ")}]`}</span>
               <span className="desktop-line text-green">{"}"}</span>
             </pre>
           </div>
@@ -29,10 +32,10 @@ export default function AboutPage() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green"># Paul Kühn</span>
+              <span className="desktop-line text-green"># {name}</span>
               <span className="desktop-line"> </span>
-              <span className="desktop-line">Applikationsentwickler</span>
-              <span className="desktop-line">in Ausbildung @ IMS Zürich</span>
+              <span className="desktop-line">{role}</span>
+              <span className="desktop-line">in Ausbildung @ {school}</span>
               <span className="desktop-line"> </span>
               <span className="desktop-line">Currently learning:</span>
               <span className="desktop-line">→ fullstack web dev</span>
@@ -76,22 +79,22 @@ export default function AboutPage() {
               <div className="about-field">
                 <span className="about-key">name</span>
                 <span className="about-sep">:</span>
-                <span className="about-value about-value--accent">Paul Kühn</span>
+                <span className="about-value about-value--accent">{name}</span>
               </div>
               <div className="about-field">
                 <span className="about-key">role</span>
                 <span className="about-sep">:</span>
-                <span className="about-value">Applikationsentwickler in Ausbildung</span>
+                <span className="about-value">{role}</span>
               </div>
               <div className="about-field">
                 <span className="about-key">location</span>
                 <span className="about-sep">:</span>
-                <span className="about-value">Zürich, Switzerland</span>
+                <span className="about-value">{location}</span>
               </div>
               <div className="about-field">
                 <span className="about-key">school</span>
                 <span className="about-sep">:</span>
-                <span className="about-value">IMS Zürich</span>
+                <span className="about-value">{school}</span>
               </div>
             </div>
 
@@ -101,39 +104,35 @@ export default function AboutPage() {
                 <span className="about-key">languages</span>
                 <span className="about-sep">:</span>
                 <span className="about-value">
-                  <span className="about-tag">TypeScript</span>
-                  <span className="about-tag">Python</span>
+                  {stack.languages.map((l) => <span className="about-tag" key={l}>{l}</span>)}
                 </span>
               </div>
               <div className="about-field">
                 <span className="about-key">frameworks</span>
                 <span className="about-sep">:</span>
                 <span className="about-value">
-                  <span className="about-tag">Next.js</span>
-                  <span className="about-tag">Tailwind CSS</span>
+                  {stack.frameworks.map((f) => <span className="about-tag" key={f}>{f}</span>)}
                 </span>
               </div>
               <div className="about-field">
                 <span className="about-key">databases</span>
                 <span className="about-sep">:</span>
                 <span className="about-value">
-                  <span className="about-tag">MySQL</span>
+                  {stack.databases.map((d) => <span className="about-tag" key={d}>{d}</span>)}
                 </span>
               </div>
               <div className="about-field">
                 <span className="about-key">tools</span>
                 <span className="about-sep">:</span>
                 <span className="about-value">
-                  <span className="about-tag">Git / GitHub</span>
+                  {stack.tools.map((t) => <span className="about-tag" key={t}>{t}</span>)}
                 </span>
               </div>
               <div className="about-field">
                 <span className="about-key">certificates</span>
                 <span className="about-sep">:</span>
                 <span className="about-value">
-                  <span className="about-tag about-tag--cert">Abacus «Anwender» 2024</span>
-                  <span className="about-tag about-tag--cert">Claude 101</span>
-                  <span className="about-tag about-tag--cert">Claude Code in Action</span>
+                  {stack.certificates.map((c) => <span className="about-tag about-tag--cert" key={c}>{c}</span>)}
                 </span>
               </div>
             </div>
@@ -143,17 +142,17 @@ export default function AboutPage() {
               <div className="about-field">
                 <span className="about-key">email</span>
                 <span className="about-sep">:</span>
-                <span className="about-value">paul.kuehn@mailbox.org</span>
+                <span className="about-value">{contact.email}</span>
               </div>
               <div className="about-field">
                 <span className="about-key">github</span>
                 <span className="about-sep">:</span>
-                <span className="about-value about-value--link">github.com/endodod</span>
+                <span className="about-value about-value--link">{contact.github}</span>
               </div>
               <div className="about-field">
                 <span className="about-key">linkedin</span>
                 <span className="about-sep">:</span>
-                <span className="about-value about-value--link">linkedin.com/in/paul-kühn</span>
+                <span className="about-value about-value--link">{contact.linkedin}</span>
               </div>
             </div>
 

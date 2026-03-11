@@ -2,6 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { profile } from "@/content/profile";
+
+const { name, role, location, contact } = profile;
 
 export default function Home() {
   const router = useRouter();
@@ -125,9 +128,9 @@ export default function Home() {
       }
     } else if (cmd === "whoami") {
       response =
-        "  Paul Kühn\n" +
-        "  Applikationsentwickler in Ausbildung\n" +
-        "  Zürich, Switzerland";
+        `  ${name}\n` +
+        `  ${role}\n` +
+        `  ${location}`;
     } else if (cmd === "pwd") {
       response = "/home/paul/portfolio";
     } else if (bin === "echo") {
@@ -212,12 +215,12 @@ export default function Home() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line">Paul Kühn</span>
-              <span className="desktop-line">Zürich, Switzerland</span>
+              <span className="desktop-line">{name}</span>
+              <span className="desktop-line">{location}</span>
               <span className="desktop-line"> </span>
-              <span className="desktop-line">mail: paul.kuehn@mailbox.org</span>
-              <span className="desktop-line">github: github.com/endodod</span>
-              <span className="desktop-line">linkedin: linkedin.com/in/paul-kühn</span>
+              <span className="desktop-line">mail: {contact.email}</span>
+              <span className="desktop-line">github: {contact.github}</span>
+              <span className="desktop-line">linkedin: {contact.linkedin}</span>
             </pre>
           </div>
         </section>

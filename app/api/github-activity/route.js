@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 
-const GITHUB_USER = process.env.NEXT_PUBLIC_GITHUB_USER || process.env.GITHUB_USER || "endodod";
+import { profile } from "@/content/profile";
+
+const GITHUB_USER = process.env.NEXT_PUBLIC_GITHUB_USER || process.env.GITHUB_USER || profile.contact.github_user;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 export async function GET() {
