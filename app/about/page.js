@@ -156,9 +156,12 @@ export default function AboutPage() {
               </div>
             </div>
 
-            <div className="about-nav">
-              <Link href="/" className="console-link">$ cd ~</Link>
-              <Link href="/projects" className="console-link">$ cd my-projects/</Link>
+            <div className="console-links">
+              <span className="console-comment"># quick commands</span>
+              <div className="console-links-row">
+                <Link href="/" className="console-link">Home</Link>
+                <Link href="/projects" className="console-link">My Projects</Link>
+              </div>
             </div>
           </div>
         </section>

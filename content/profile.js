@@ -9,6 +9,12 @@ export const profile = {
   location: "Zürich, Switzerland",
   school: "IMS Zürich",
 
+  whoami: [
+    "Paul Kühn",
+    "Applikationsentwickler in Ausbildung",
+    "Zürich, Switzerland",
+  ],
+
   contact: {
     email: "paul.kuehn@mailbox",
     github: "github.com/endodod",

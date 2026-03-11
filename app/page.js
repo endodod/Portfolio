@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { profile } from "@/content/profile";
 
-const { name, role, location, contact } = profile;
+const { name, location, whoami, contact } = profile;
 
 export default function Home() {
   const router = useRouter();
@@ -13,6 +13,9 @@ export default function Home() {
   const [command, setCommand] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [time, setTime] = useState("");
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const draftCommand = useRef("");
   const [gitLog, setGitLog] = useState(["loading..."]);
   const outputWrapperRef = useRef(null);
   const inputRef = useRef(null);
@@ -127,10 +130,7 @@ export default function Home() {
         response = `cat: ${arg}: No such file or directory`;
       }
     } else if (cmd === "whoami") {
-      response =
-        `  ${name}\n` +
-        `  ${role}\n` +
-        `  ${location}`;
+      response = whoami.map((line) => `  ${line}`).join("\n");
     } else if (cmd === "pwd") {
       response = "/home/paul/portfolio";
     } else if (bin === "echo") {
@@ -143,6 +143,10 @@ export default function Home() {
     } else {
       response = `bash: ${bin}: command not found`;
     }
+
+    setHistory((prev) => [cmd, ...prev]);
+    setHistoryIndex(-1);
+    draftCommand.current = "";
 
     const entry = `paul @ portfolio ~ $ ${cmd}\n${response}\n`;
     const queueItem = redirect
@@ -299,7 +303,29 @@ export default function Home() {
                 ref={inputRef}
                 className="console-input-field"
                 value={command}
-                onChange={(e) => setCommand(e.target.value)}
+                onChange={(e) => {
+                  setCommand(e.target.value);
+                  if (historyIndex === -1) draftCommand.current = e.target.value;
+                }}
+                onKeyDown={(e) => {
+                  if (isTyping || history.length === 0) return;
+                  if (e.key === "ArrowUp") {
+                    e.preventDefault();
+                    const next = Math.min(historyIndex + 1, history.length - 1);
+                    setHistoryIndex(next);
+                    setCommand(history[next]);
+                  } else if (e.key === "ArrowDown") {
+                    e.preventDefault();
+                    const next = historyIndex - 1;
+                    if (next < 0) {
+                      setHistoryIndex(-1);
+                      setCommand(draftCommand.current);
+                    } else {
+                      setHistoryIndex(next);
+                      setCommand(history[next]);
+                    }
+                  }
+                }}
                 placeholder={isTyping ? "typing..." : "type a command... (try `help`)"}
                 autoComplete="off"
                 readOnly={isTyping}
@@ -316,7 +342,7 @@ export default function Home() {
                   onClick={() => !isTyping && runCommand("cd my-projects/")}
                   disabled={isTyping}
                 >
-                  $ cd my-projects/
+                  My Projects
                 </button>
                 <button
                   type="button"
@@ -324,7 +350,7 @@ export default function Home() {
                   onClick={() => !isTyping && runCommand("cat about-me.txt")}
                   disabled={isTyping}
                 >
-                  $ cat about-me.txt
+                  About Me
                 </button>
               </div>
             </div>

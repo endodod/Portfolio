@@ -120,9 +120,12 @@ export default function ProjectsPage() {
               </div>
             ))}
 
-            <div className="about-nav">
-              <Link href="/" className="console-link">$ cd ~</Link>
-              <Link href="/about" className="console-link">$ cat about-me.txt</Link>
+            <div className="console-links">
+              <span className="console-comment"># quick commands</span>
+              <div className="console-links-row">
+                <Link href="/" className="console-link">Home</Link>
+                <Link href="/about" className="console-link">About Me</Link>
+              </div>
             </div>
           </div>
         </section>
