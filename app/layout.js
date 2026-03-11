@@ -1,4 +1,5 @@
 import "./globals.css";
+import ScaleInit from "@/components/ScaleInit";
 
 export const metadata = {
   title: "Portfolio",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
         `}} />
       </head>
       <body className="app-body">
+        <ScaleInit />
         {children}
       </body>
     </html>
