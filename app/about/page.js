@@ -10,7 +10,6 @@ const ABOUT_FILES = {
 
 const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
-  { label: "My Projects", command: "cd my-projects/" },
 ];
 
 export default function AboutPage() {
@@ -19,50 +18,17 @@ export default function AboutPage() {
       <div className="home-shell home-shell--stack">
 
         {/* Background decorative windows */}
-        <section className="desktop-window desktop-window--about-skills" aria-hidden="true">
+        <section className="desktop-window desktop-window--about-lang" aria-hidden="true">
           <div className="desktop-header">
-            <span className="desktop-title">skills.json</span>
+            <span className="desktop-title">languages.txt</span>
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">{"{"}</span>
-              <span className="desktop-line">{`  "languages": [${stack.languages.map(l => `"${l}"`).join(", ")}],`}</span>
-              <span className="desktop-line">{`  "frameworks": [${stack.frameworks.map(f => `"${f}"`).join(", ")}],`}</span>
-              <span className="desktop-line">{`  "db": [${stack.databases.map(d => `"${d}"`).join(", ")}],`}</span>
-              <span className="desktop-line">{`  "tools": [${stack.tools.map(t => `"${t}"`).join(", ")}]`}</span>
-              <span className="desktop-line text-green">{"}"}</span>
-            </pre>
-          </div>
-        </section>
-
-        <section className="desktop-window desktop-window--about-notes" aria-hidden="true">
-          <div className="desktop-header">
-            <span className="desktop-title">readme.md</span>
-          </div>
-          <div className="desktop-body">
-            <pre>
-              <span className="desktop-line text-green"># {name}</span>
+              <span className="desktop-line text-green">## spoken languages</span>
               <span className="desktop-line"> </span>
-              <span className="desktop-line">{role}</span>
-              <span className="desktop-line">in Ausbildung @ {school}</span>
-              <span className="desktop-line"> </span>
-              <span className="desktop-line">Currently learning:</span>
-              <span className="desktop-line">→ fullstack web dev</span>
-              <span className="desktop-line">→ system architecture</span>
-            </pre>
-          </div>
-        </section>
-
-        <section className="desktop-window desktop-window--about-git" aria-hidden="true">
-          <div className="desktop-header">
-            <span className="desktop-title">activity.log</span>
-          </div>
-          <div className="desktop-body">
-            <pre>
-              <span className="desktop-line text-green">● learning Next.js</span>
-              <span className="desktop-line">● building portfolio</span>
-              <span className="desktop-line">● studying for exams</span>
-              <span className="desktop-line">● reading clean code</span>
+              <span className="desktop-line">german   {"██████████"}  C2</span>
+              <span className="desktop-line">english  {"████████░░"}  C1</span>
+              <span className="desktop-line">french   {"█████░░░░░"}  B1</span>
             </pre>
           </div>
         </section>

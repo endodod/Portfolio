@@ -16,7 +16,7 @@ export const profile = {
   ],
 
   contact: {
-    email: "paul.kuehn@mailbox",
+    email: "paul.development@mailbox.org",
     github: "github.com/endodod",
     githubUrl: "https://github.com/endodod",
     github_user: "endodod",

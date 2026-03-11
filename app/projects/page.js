@@ -4,7 +4,6 @@ import { projects } from "@/content/projects";
 
 const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
-  { label: "About Me", command: "cat about-me.txt" },
 ];
 
 const PROJECT_FILES = Object.fromEntries(
@@ -20,46 +19,20 @@ export default function ProjectsPage() {
       <div className="home-shell home-shell--stack">
 
         {/* Background decorative windows */}
-        <section className="desktop-window desktop-window--proj-langs" aria-hidden="true">
+<section className="desktop-window desktop-window--proj-pkg" aria-hidden="true">
           <div className="desktop-header">
-            <span className="desktop-title">languages.json</span>
+            <span className="desktop-title">requirements.txt</span>
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">{"{"}</span>
-              <span className="desktop-line">{"  \"Python\":     ████░░  42%,"}</span>
-              <span className="desktop-line">{"  \"JavaScript\": ███░░░  33%,"}</span>
-              <span className="desktop-line">{"  \"CSS\":         ██░░░░  16%,"}</span>
-              <span className="desktop-line">{"  \"HTML\":        █░░░░░   9%"}</span>
-              <span className="desktop-line text-green">{"}"}</span>
-            </pre>
-          </div>
-        </section>
-
-        <section className="desktop-window desktop-window--proj-stats" aria-hidden="true">
-          <div className="desktop-header">
-            <span className="desktop-title">stats.txt</span>
-          </div>
-          <div className="desktop-body">
-            <pre>
-              <span className="desktop-line text-green">● repos         3</span>
-              <span className="desktop-line">● languages     4</span>
-              <span className="desktop-line">● frameworks    5</span>
-              <span className="desktop-line">● deployments   1</span>
-            </pre>
-          </div>
-        </section>
-
-        <section className="desktop-window desktop-window--proj-git" aria-hidden="true">
-          <div className="desktop-header">
-            <span className="desktop-title">git log --oneline</span>
-          </div>
-          <div className="desktop-body">
-            <pre>
-              <span className="desktop-line text-green">f3a91c2 add docker support</span>
-              <span className="desktop-line">b71e084 fix card deal logic</span>
-              <span className="desktop-line">c290d17 init portfolio v2</span>
-              <span className="desktop-line">9d4e531 add yfinance API</span>
+              <span className="desktop-line text-green">Flask==3.1.1</span>
+              <span className="desktop-line">Flask-Login==0.6.3</span>
+              <span className="desktop-line">Flask-WTF==1.2.1</span>
+              <span className="desktop-line">Werkzeug==3.1.3</span>
+              <span className="desktop-line">mysql-connector-python==8.1.0</span>
+              <span className="desktop-line">yfinance==0.2.65</span>
+              <span className="desktop-line">python-dotenv==1.1.1</span>
+              <span className="desktop-line">gunicorn==21.2.0</span>
             </pre>
           </div>
         </section>

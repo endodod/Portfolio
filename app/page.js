@@ -5,22 +5,35 @@ import { profile } from "@/content/profile";
 
 const { name, location, contact } = profile;
 
+function buildCalendarCells(now) {
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const today = now.getDate();
+  const firstDow = new Date(year, month, 1).getDay(); // 0=Sun
+  const startOffset = (firstDow + 6) % 7; // Monday-first
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const cells = [];
+  for (let i = 0; i < startOffset; i++) cells.push({ day: null, isToday: false });
+  for (let d = 1; d <= daysInMonth; d++) cells.push({ day: d, isToday: d === today });
+  return cells;
+}
+
 const QUICK_COMMANDS = [
   { label: "My Projects", command: "cd my-projects/" },
   { label: "About Me", command: "cat about-me.txt" },
 ];
 
 export default function Home() {
-  const [time, setTime] = useState("");
+  const [now, setNow] = useState(() => new Date());
+  const time = now.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const date = now.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  const calMonth = now.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  const calCells = buildCalendarCells(now);
   const [gitLog, setGitLog] = useState(["loading..."]);
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      setTime(now.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
-    };
-    tick();
-    const id = setInterval(tick, 1000);
+    const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
@@ -29,6 +42,13 @@ export default function Home() {
       .then((r) => r.json())
       .then((d) => setGitLog(d.commits || ["(no data)"]))
       .catch(() => setGitLog(["(unavailable)"]));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/weather")
+      .then((r) => r.json())
+      .then((d) => setWeather(d.error ? "unavailable" : `${d.temp} · ${d.condition}`))
+      .catch(() => setWeather("unavailable"));
   }, []);
 
   return (
@@ -55,23 +75,21 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="desktop-window desktop-window--player" aria-hidden="true">
+        <section className="desktop-window desktop-window--cal" aria-hidden="true">
           <div className="desktop-header">
-            <span className="desktop-title">now-playing.mp3</span>
+            <span className="desktop-title">calendar.txt</span>
           </div>
-          <div className="desktop-body desktop-body--player">
-            <div className="player-track">lofi-focus-loop-07</div>
-            <div className="player-bar">
-              <span className="player-time">01:12</span>
-              <span className="player-rail">
-                <span className="player-progress" />
-              </span>
-              <span className="player-time">03:48</span>
-            </div>
-            <div className="player-controls">
-              <span>⏮</span>
-              <span>⏯</span>
-              <span>⏭</span>
+          <div className="desktop-body desktop-body--cal">
+            <div className="cal-month">{calMonth}</div>
+            <div className="cal-grid">
+              {["Mo","Tu","We","Th","Fr","Sa","Su"].map((d) => (
+                <span key={d} className="cal-header">{d}</span>
+              ))}
+              {calCells.map((cell, i) => (
+                <span key={i} className={`cal-day${cell.isToday ? " cal-day--today" : ""}`}>
+                  {cell.day ?? ""}
+                </span>
+              ))}
             </div>
           </div>
         </section>
@@ -116,11 +134,7 @@ export default function Home() {
             </div>
             <div className="status-row">
               <span>weather</span>
-              <span>12°C · clear</span>
-            </div>
-            <div className="status-row">
-              <span>headline</span>
-              <span>new build deployed to prod</span>
+              <span>{weather ?? "—"}</span>
             </div>
           </div>
         </section>
