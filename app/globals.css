@@ -7,7 +7,8 @@
 
 html,
 body {
-  height: 100%;
+  height: auto;
+  min-height: 100%;
   margin: 0;
   padding: 0;
 }
@@ -25,7 +26,7 @@ body {
 }
 
 .app-body {
-  min-height: 100vh;
+  min-height: calc(var(--real-vh, 1vh) * 100);
   background:
     radial-gradient(circle at 0 0, #0f172a 0, transparent 45%),
     radial-gradient(circle at 100% 20%, #22c55e1a 0, transparent 50%),
@@ -58,7 +59,7 @@ a {
 
 /* Home layout */
 .home {
-  min-height: 100vh;
+  min-height: calc(var(--real-vh, 1vh) * 100);
   display: flex;
   justify-content: center;
   padding: 3rem 1.75rem 4rem;
@@ -82,7 +83,7 @@ a {
 }
 
 .home--fixed {
-  height: 100vh;
+  height: calc(var(--real-vh, 1vh) * 100);
   overflow: hidden;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -349,6 +350,10 @@ a {
   overflow-x: hidden;
   scrollbar-width: thin;
   scrollbar-color: rgba(63, 63, 70, 0.8) transparent;
+}
+
+.home--fixed .console-output-wrapper {
+  height: 4rem;
 }
 
 .console-output-wrapper::-webkit-scrollbar {
