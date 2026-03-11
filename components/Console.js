@@ -12,7 +12,9 @@ export default function Console({ quickCommands = [], autoRun = true }) {
   const [queue, setQueue] = useState([]);
   const [command, setCommand] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState(() => {
+    try { return JSON.parse(sessionStorage.getItem("console-history") || "[]"); } catch { return []; }
+  });
   const [historyIndex, setHistoryIndex] = useState(-1);
   const draftCommand = useRef("");
   const containerRef = useRef(null);
@@ -40,7 +42,8 @@ export default function Console({ quickCommands = [], autoRun = true }) {
     let i = 0;
 
     const interval = setInterval(() => {
-      setConsoleText((prev) => prev + segment.charAt(i));
+      const char = segment.charAt(i);
+      setConsoleText((prev) => prev + char);
       i++;
       if (i >= segment.length) {
         clearInterval(interval);
@@ -75,7 +78,7 @@ export default function Console({ quickCommands = [], autoRun = true }) {
         "whoami   - show current user info\n" +
         "clear    - clear the console";
     } else if (cmd === "ls" || cmd === "ls .") {
-      response = "about-me.txt  my-projects/  contact/";
+      response = "about-me.txt  my-projects/";
     } else if (bin === "ls") {
       response = `ls: cannot access '${arg}': No such file or directory`;
     } else if (bin === "cd") {
@@ -85,9 +88,6 @@ export default function Console({ quickCommands = [], autoRun = true }) {
       } else if (arg === "my-projects") {
         response = "navigating to my projects...";
         redirect = "/projects";
-      } else if (arg === "contact") {
-        response = "navigating to contact...";
-        redirect = "/contact";
       } else {
         response = `cd: ${arg}: No such file or directory`;
       }
@@ -115,15 +115,24 @@ export default function Console({ quickCommands = [], autoRun = true }) {
       response = `bash: ${bin}: command not found`;
     }
 
-    setHistory((prev) => [cmd, ...prev]);
+    setHistory((prev) => {
+      const next = [cmd, ...prev];
+      try { sessionStorage.setItem("console-history", JSON.stringify(next)); } catch {}
+      return next;
+    });
     setHistoryIndex(-1);
     draftCommand.current = "";
 
-    const entry = `${PROMPT}${cmd}\n${response}\n`;
-    const queueItem = redirect
-      ? { text: entry, onComplete: () => router.push(redirect) }
-      : entry;
-    setQueue((prev) => [...prev, queueItem]);
+    // Commit prompt + command instantly; only typewrite the response
+    setConsoleText((prev) => prev + `${PROMPT}${cmd}\n`);
+    if (response) {
+      const queueItem = redirect
+        ? { text: response + "\n", onComplete: () => router.push(redirect) }
+        : response + "\n";
+      setQueue((prev) => [...prev, queueItem]);
+    } else if (redirect) {
+      router.push(redirect);
+    }
     containerRef.current?.focus();
   };
 
@@ -167,6 +176,7 @@ export default function Console({ quickCommands = [], autoRun = true }) {
       e.preventDefault();
       setConsoleText((prev) => prev + `${PROMPT}${command}^C\n`);
       setCommand("");
+      setQueue([]);
       setHistoryIndex(-1);
       draftCommand.current = "";
     } else if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {

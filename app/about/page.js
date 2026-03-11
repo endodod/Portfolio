@@ -115,12 +115,12 @@ export default function AboutPage() {
                 <div className="about-field">
                   <span className="about-key">github</span>
                   <span className="about-sep">:</span>
-                  <span className="about-value about-value--link">{contact.github}</span>
+                  <a className="about-value about-value--link" href={contact.githubUrl} target="_blank" rel="noopener noreferrer">{contact.github}</a>
                 </div>
                 <div className="about-field">
                   <span className="about-key">linkedin</span>
                   <span className="about-sep">:</span>
-                  <span className="about-value about-value--link">{contact.linkedin}</span>
+                  <a className="about-value about-value--link" href={contact.linkedinUrl} target="_blank" rel="noopener noreferrer">{contact.linkedin}</a>
                 </div>
               </div>
             </div>
