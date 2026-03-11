@@ -9,7 +9,7 @@ const QUICK_COMMANDS = [
 
 export default function ProjectsPage() {
   return (
-    <main className="home console">
+    <main className="home home--fixed console">
       <div className="home-shell home-shell--stack">
 
         {/* Background decorative windows */}
@@ -129,7 +129,7 @@ export default function ProjectsPage() {
           </div>
         </section>
 
-        <Console quickCommands={QUICK_COMMANDS} />
+        <Console quickCommands={QUICK_COMMANDS} autoRun={false} />
       </div>
     </main>
   );

@@ -6,7 +6,7 @@ import { profile } from "@/content/profile";
 const { whoami } = profile;
 const PROMPT = "paul @ portfolio ~ $ ";
 
-export default function Console({ quickCommands = [] }) {
+export default function Console({ quickCommands = [], autoRun = true }) {
   const router = useRouter();
   const [consoleText, setConsoleText] = useState("");
   const [queue, setQueue] = useState([]);
@@ -23,7 +23,7 @@ export default function Console({ quickCommands = [] }) {
     containerRef.current?.focus();
     if (hasInit.current) return;
     hasInit.current = true;
-    runCommand("whoami");
+    if (autoRun) runCommand("whoami");
   }, []);
 
   useEffect(() => {
