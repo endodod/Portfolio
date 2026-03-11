@@ -67,12 +67,6 @@ export default function ProjectsPage() {
           </div>
 
           <div className="projects-body">
-            <div className="about-file-header">
-              <span className="about-comment"># ──────────────────────────────────────</span>
-              <span className="about-comment">#  my-projects/</span>
-              <span className="about-comment"># ──────────────────────────────────────</span>
-            </div>
-
             <div className="proj-grid">
             {projects.map((p) => (
               <div className="proj-entry" key={p.name}>

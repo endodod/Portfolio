@@ -73,12 +73,6 @@ export default function AboutPage() {
           </div>
 
           <div className="about-body">
-            <div className="about-file-header">
-              <span className="about-comment"># ──────────────────────────────────────</span>
-              <span className="about-comment">#  about-me.txt</span>
-              <span className="about-comment"># ──────────────────────────────────────</span>
-            </div>
-
             {/* identity + contact side by side */}
             <div className="about-top-row">
               <div className="about-section">
