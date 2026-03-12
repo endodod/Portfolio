@@ -31,7 +31,7 @@ export const projects = [
     stack: ["Next.js", "JavaScript", "Tailwind CSS", "Vercel"],
     github: "github.com/endodod/Cardshark",
     githubUrl: "https://github.com/endodod/Cardshark",
-    live: "https://cardshark.paulkuehn.ch",
+    live: "cardshark.paulkuehn.ch",
     liveUrl: "https://cardshark.paulkuehn.ch",
     status: "in-progress",
   },
