@@ -8,7 +8,7 @@ export const projects = [
     name: "PortfolioAnalyzer",
     dir: "portfolio-analyzer/",
     description: "Web app for analyzing security portfolios with real-time stock data",
-    stack: ["Python", "Flask", "MySQL", "Docker", "Bootstrap 5", "yfinance", "APScheduler", "Gunicorn", "pytest"],
+    stack: ["Python", "Flask", "MySQL", "Docker", "Bootstrap 5", "yfinance"],
     github: "github.com/endodod/PortfolioAnalyzer",
     githubUrl: "https://github.com/endodod/PortfolioAnalyzer",
     status: "stable",
