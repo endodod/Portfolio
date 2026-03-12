@@ -41,7 +41,7 @@ export const projects = [
     github: "github.com/endodod/Portfolio",
     githubUrl: "https://github.com/endodod/Portfolio",
     live: "paulkuehn.ch",
-    liveUrl: "https://paulkuehn.ch",
+    liveUrl: "https://cardshark.paulkuehn.ch",
     status: "active",
   },
 ];
