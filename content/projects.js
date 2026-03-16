@@ -17,7 +17,7 @@ export const projects = [
     name: "BlackJack",
     dir: "blackjack/",
     description: "Browser-based Blackjack card game",
-    stack: ["Next.js", "React", "JavaScript", "CSS", "Vercel"],
+    stack: ["Next.js", "React", "JavaScript", "CSS", "Vercel", "Prisma", "PostgreSQL"],
     github: "github.com/endodod/BlackJack",
     githubUrl: "https://github.com/endodod/BlackJack",
     live: "blackjack.paulkuehn.ch",
