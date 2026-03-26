@@ -61,7 +61,7 @@ export default function ProjectsPage() {
                 </div>
 
                 <div className="proj-fields">
-                  <div className="about-field">
+                  <div className="about-field proj-field--description">
                     <span className="about-key">description</span>
                     <span className="about-sep">:</span>
                     <span className="about-value">{p.description}</span>

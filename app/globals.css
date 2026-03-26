@@ -759,6 +759,17 @@ a {
     grid-template-columns: 1fr;
   }
 
+  /* Description row: hide label, show value full-width */
+  .proj-field--description .about-key,
+  .proj-field--description .about-sep {
+    display: none;
+  }
+
+  .proj-field--description .about-value {
+    display: block;
+    width: 100%;
+  }
+
   /* Hide stack row on mobile to save space */
   .proj-field--stack {
     display: none;
