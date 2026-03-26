@@ -19,11 +19,19 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [cursorPos, setCursorPos] = useState(0);
   const [allSelected, setAllSelected] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const draftCommand = useRef("");
   const containerRef = useRef(null);
   const outputWrapperRef = useRef(null);
   const commandTextRef = useRef(null);
   const hasInit = useRef(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768 || navigator.maxTouchPoints > 0);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   useEffect(() => {
     containerRef.current?.focus();
@@ -328,9 +336,9 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
     <section
       className="console-window"
       ref={containerRef}
-      tabIndex={0}
+      tabIndex={isMobile ? -1 : 0}
       onKeyDown={handleKeyDown}
-      onClick={() => containerRef.current?.focus()}
+      onClick={() => !isMobile && containerRef.current?.focus()}
       aria-label="Interactive console"
     >
       <div className="console-header">
@@ -344,9 +352,12 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
         <div ref={outputWrapperRef} className="console-output-wrapper">
           <pre className="console-output">
             {consoleText}
-            {!isTyping && queue.length === 0 ? (
+            {!isMobile && (!isTyping && queue.length === 0 ? (
               <>{PROMPT}<span ref={commandTextRef}>{command.slice(0, cursorPos)}<span className="console-cursor" aria-hidden="true">{command[cursorPos] ?? ' '}</span>{command.slice(cursorPos + 1)}</span></>
             ) : (
+              <span className="console-cursor" aria-hidden="true"> </span>
+            ))}
+            {isMobile && isTyping && (
               <span className="console-cursor" aria-hidden="true"> </span>
             )}
           </pre>
@@ -354,13 +365,13 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
 
         {quickCommands.length > 0 && (
           <div className="console-links">
-            <span className="console-comment"># quick commands</span>
-            <div className="console-links-row">
+            {!isMobile && <span className="console-comment"># quick commands</span>}
+            <div className={`console-links-row${isMobile ? " console-links-row--mobile" : ""}`}>
               {quickCommands.map(({ label, command: cmd }) => (
                 <button
                   key={label}
                   type="button"
-                  className="console-link"
+                  className={`console-link${isMobile ? " console-link--mobile" : ""}`}
                   onClick={() => !isTyping && runCommand(cmd)}
                   disabled={isTyping}
                 >

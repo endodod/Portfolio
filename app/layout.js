@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
           (function() {
             function applyScale() {
               var baseWidth = 1485;
-              var scale = window.innerWidth / baseWidth;
+              var scale = window.innerWidth < 768 ? 1 : window.innerWidth / baseWidth;
               document.documentElement.style.zoom = scale;
               var realVh = (window.innerHeight / scale) * 0.01;
               document.documentElement.style.setProperty('--real-vh', realVh + 'px');

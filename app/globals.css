@@ -703,3 +703,72 @@ a {
     width: 100%;
   }
 }
+
+@media (max-width: 767px) {
+  /* Re-enable the decorative desktop windows hidden by the 960px breakpoint */
+  .desktop-window {
+    display: block;
+  }
+
+  /* Bring far-left window closer to visible area */
+  .desktop-window--help-console {
+    left: -40px;
+  }
+
+  /* Center the status window (original left:28% goes off-screen at narrow widths) */
+  .desktop-window--status {
+    left: 50%;
+    transform: translateX(-50%) rotate(1deg);
+    bottom: 0;
+  }
+
+  /* about/projects decorative windows sit too far off-screen — keep hidden */
+  .desktop-window--about-lang,
+  .desktop-window--proj-pkg {
+    display: none;
+  }
+
+  /* Fix about/projects pages: allow scrolling instead of clipping */
+  .home--fixed {
+    height: auto;
+    min-height: calc(var(--real-vh, 1vh) * 100);
+    overflow: auto;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+
+  /* Stack about identity/contact sections vertically */
+  .about-top-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  /* Stack project cards to single column */
+  .proj-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Adjust console output height on mobile */
+  .home .console-output-wrapper {
+    height: 6rem;
+  }
+
+  .home--fixed .console-output-wrapper {
+    height: 3rem;
+  }
+
+  /* Mobile quick-command buttons: bigger touch targets */
+  .console-link--mobile {
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+    border-radius: 0.65rem;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .console-links-row--mobile {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
