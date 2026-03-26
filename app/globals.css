@@ -384,20 +384,17 @@ a {
   transition:
     background-color 140ms ease,
     border-color 140ms ease,
-    transform 140ms ease,
-    box-shadow 140ms ease;
+    transform 140ms ease;
 }
 
 .console-link--accent {
   border-color: rgba(52, 211, 153, 0.9);
-  box-shadow: 0 0 20px rgba(34, 197, 94, 0.35);
 }
 
 .console-link:hover {
   background: rgba(15, 23, 42, 0.98);
   border-color: rgba(55, 65, 81, 0.9);
   transform: translateY(-1px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.9);
 }
 
 .console-link:disabled {
@@ -681,6 +678,10 @@ a {
   background: rgba(129, 244, 225, 0.06);
 }
 
+.proj-buttons {
+  display: none;
+}
+
 /* ── End Projects page ───────────────────────── */
 
 /* Responsive tweaks */
@@ -761,6 +762,46 @@ a {
   /* Hide stack row on mobile to save space */
   .proj-field--stack {
     display: none;
+  }
+
+  /* Hide link rows on mobile, show buttons instead */
+  .proj-field--github-link,
+  .proj-field--live-link {
+    display: none;
+  }
+
+  .proj-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+  }
+
+  .proj-btn {
+    padding: 0.35rem 0.85rem;
+    border-radius: 0.45rem;
+    border: 1px solid rgba(31, 41, 55, 0.9);
+    background: rgba(3, 7, 18, 0.96);
+    color: rgba(187, 247, 208, 0.9);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-family: inherit;
+    letter-spacing: 0.04em;
+  }
+
+  .proj-btn--live {
+    border-color: rgba(52, 211, 153, 0.45);
+    color: rgba(129, 244, 225, 0.85);
+  }
+
+  /* Stack section: keep key on same line, wrap tags within value column (no left-edge bleed) */
+  .about-section--stack .about-field {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+
+  .about-section--stack .about-value {
+    flex: 1;
+    min-width: 0;
   }
 
   /* Adjust console output height on mobile */

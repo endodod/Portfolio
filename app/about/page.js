@@ -90,7 +90,7 @@ export default function AboutPage() {
             </div>
 
             {/* stack full width below */}
-            <div className="about-section">
+            <div className="about-section about-section--stack">
               <span className="about-comment">## stack</span>
               <div className="about-field">
                 <span className="about-key">languages</span>

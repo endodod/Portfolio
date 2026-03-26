@@ -75,7 +75,7 @@ export default function ProjectsPage() {
                       ))}
                     </span>
                   </div>
-                  <div className="about-field">
+                  <div className="about-field proj-field--github-link">
                     <span className="about-key">github</span>
                     <span className="about-sep">:</span>
                     <a
@@ -88,7 +88,7 @@ export default function ProjectsPage() {
                     </a>
                   </div>
                   {p.live && (
-                    <div className="about-field">
+                    <div className="about-field proj-field--live-link">
                       <span className="about-key">live</span>
                       <span className="about-sep">:</span>
                       <a
@@ -101,6 +101,12 @@ export default function ProjectsPage() {
                       </a>
                     </div>
                   )}
+                  <div className="proj-buttons">
+                    <a className="proj-btn" href={p.githubUrl} target="_blank" rel="noopener noreferrer">github</a>
+                    {p.live && (
+                      <a className="proj-btn proj-btn--live" href={p.liveUrl} target="_blank" rel="noopener noreferrer">live</a>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}
