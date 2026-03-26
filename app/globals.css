@@ -705,24 +705,34 @@ a {
 }
 
 @media (max-width: 767px) {
-  /* Re-enable the decorative desktop windows hidden by the 960px breakpoint */
-  .desktop-window {
+  /* On home page: only show contact.txt and help.txt, centered above/below console */
+  .desktop-window--notes {
     display: block;
-  }
-
-  /* Bring far-left window closer to visible area */
-  .desktop-window--help-console {
-    left: -40px;
-  }
-
-  /* Center the status window (original left:28% goes off-screen at narrow widths) */
-  .desktop-window--status {
+    position: fixed;
+    top: 1rem;
     left: 50%;
-    transform: translateX(-50%) rotate(1deg);
-    bottom: 0;
+    right: auto;
+    bottom: auto;
+    transform: translateX(-50%) rotate(1.5deg);
+    z-index: 1;
   }
 
-  /* about/projects decorative windows sit too far off-screen — keep hidden */
+  .desktop-window--help-console {
+    display: block;
+    position: fixed;
+    bottom: 1rem;
+    left: 50%;
+    top: auto;
+    right: auto;
+    width: 300px;
+    transform: translateX(-50%) rotate(-1deg);
+    z-index: 1;
+  }
+
+  /* Hide all other decorative windows on mobile */
+  .desktop-window--cal,
+  .desktop-window--git,
+  .desktop-window--status,
   .desktop-window--about-lang,
   .desktop-window--proj-pkg {
     display: none;
@@ -748,13 +758,29 @@ a {
     grid-template-columns: 1fr;
   }
 
+  /* Hide stack row on mobile to save space */
+  .proj-field--stack {
+    display: none;
+  }
+
   /* Adjust console output height on mobile */
   .home .console-output-wrapper {
     height: 6rem;
   }
 
   .home--fixed .console-output-wrapper {
-    height: 3rem;
+    height: 0;
+    overflow: hidden;
+  }
+
+  /* Remove space around the Home button on about/projects pages */
+  .home--fixed .console-body {
+    padding-top: 0.6rem;
+    padding-bottom: 0.7rem;
+  }
+
+  .home--fixed .console-links {
+    margin-top: 0;
   }
 
   /* Mobile quick-command buttons: bigger touch targets */

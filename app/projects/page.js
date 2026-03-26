@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import Console from "@/components/Console";
 import { projects } from "@/content/projects";
 
@@ -14,6 +15,10 @@ const PROJECT_FILES = Object.fromEntries(
 );
 
 export default function ProjectsPage() {
+  useEffect(() => {
+    if (window.innerWidth < 768) window.scrollTo(0, 0);
+  }, []);
+
   return (
     <main className="home home--fixed console">
       <div className="home-shell home-shell--stack">
@@ -61,7 +66,7 @@ export default function ProjectsPage() {
                     <span className="about-sep">:</span>
                     <span className="about-value">{p.description}</span>
                   </div>
-                  <div className="about-field">
+                  <div className="about-field proj-field--stack">
                     <span className="about-key">stack</span>
                     <span className="about-sep">:</span>
                     <span className="about-value">
