@@ -682,6 +682,35 @@ a {
   display: none;
 }
 
+/* Inner scroll when projects page is inside fixed layout */
+.home--fixed .projects-window {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.home--fixed .projects-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(63, 63, 70, 0.8) transparent;
+}
+
+.home--fixed .projects-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.home--fixed .projects-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.home--fixed .projects-body::-webkit-scrollbar-thumb {
+  background: rgba(63, 63, 70, 0.8);
+  border-radius: 3px;
+}
+
 /* ── End Projects page ───────────────────────── */
 
 /* Responsive tweaks */
