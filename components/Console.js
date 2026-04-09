@@ -7,7 +7,7 @@ const { whoami } = profile;
 const PROMPT = "paul @ portfolio ~ $ ";
 const KNOWN_BINS = ["help", "ls", "cd", "cat", "whoami", "clear", "pwd", "echo"];
 
-export default function Console({ quickCommands = [], autoRun = true, files = {}, dirs = null }) {
+export default function Console({ quickCommands = [], autoRun = true, files = {}, dirs = null, noLs = false, readOnly = false }) {
   const router = useRouter();
   const [consoleText, setConsoleText] = useState("");
   const [queue, setQueue] = useState([]);
@@ -89,14 +89,18 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
         "whoami   - show current user info\n" +
         "clear    - clear the console";
     } else if (cmd === "ls" || cmd === "ls .") {
-      const fileKeys = Object.keys(files);
-      const dirKeys = dirs !== null ? Object.keys(dirs).map((d) => d + "/") : [];
-      if (fileKeys.length > 0 || dirKeys.length > 0) {
-        response = [...fileKeys, ...dirKeys].join("  ");
-      } else if (dirs === null) {
-        response = "about-me.txt  my-projects/";
+      if (noLs) {
+        response = "ls: .: Not a directory";
       } else {
-        response = "";
+        const fileKeys = Object.keys(files);
+        const dirKeys = dirs !== null ? Object.keys(dirs).map((d) => d + "/") : [];
+        if (fileKeys.length > 0 || dirKeys.length > 0) {
+          response = [...fileKeys, ...dirKeys].join("  ");
+        } else if (dirs === null) {
+          response = "about-me.txt  my-projects/";
+        } else {
+          response = "";
+        }
       }
     } else if (bin === "ls") {
       if (arg.startsWith("-")) {
@@ -114,14 +118,18 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
         if (dirs[arg] !== undefined) {
           response = `navigating to ${arg}...`;
           redirect = dirs[arg];
+        } else if (files[arg] !== undefined || arg.includes(".")) {
+          response = `cd: ${arg}: Not a directory`;
         } else {
-          response = `cd: ${arg}: No such file or directory`;
+          response = `cd: ${arg}: No such directory`;
         }
       } else if (arg === "my-projects") {
         response = "navigating to my projects...";
         redirect = "/projects";
+      } else if (arg.includes(".")) {
+        response = `cd: ${arg}: Not a directory`;
       } else {
-        response = `cd: ${arg}: No such file or directory`;
+        response = `cd: ${arg}: No such directory`;
       }
     } else if (bin === "cat") {
       if (!arg) {
@@ -336,9 +344,9 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
     <section
       className="console-window"
       ref={containerRef}
-      tabIndex={isMobile ? -1 : 0}
-      onKeyDown={handleKeyDown}
-      onClick={() => !isMobile && containerRef.current?.focus()}
+      tabIndex={readOnly || isMobile ? -1 : 0}
+      onKeyDown={readOnly ? undefined : handleKeyDown}
+      onClick={() => !readOnly && !isMobile && containerRef.current?.focus()}
       aria-label="Interactive console"
     >
       <div className="console-header">
@@ -352,7 +360,7 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
         <div ref={outputWrapperRef} className="console-output-wrapper">
           <pre className="console-output">
             {consoleText}
-            {!isMobile && (!isTyping && queue.length === 0 ? (
+            {!readOnly && !isMobile && (!isTyping && queue.length === 0 ? (
               <>{PROMPT}<span ref={commandTextRef}>{command.slice(0, cursorPos)}<span className="console-cursor" aria-hidden="true">{command[cursorPos] ?? ' '}</span>{command.slice(cursorPos + 1)}</span></>
             ) : (
               <span className="console-cursor" aria-hidden="true"> </span>

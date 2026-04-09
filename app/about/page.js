@@ -131,7 +131,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <Console quickCommands={QUICK_COMMANDS} autoRun={false} files={ABOUT_FILES} dirs={{}} />
+        <Console quickCommands={QUICK_COMMANDS} autoRun={false} files={ABOUT_FILES} dirs={{}} noLs />
       </div>
     </main>
   );
