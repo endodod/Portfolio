@@ -7,7 +7,7 @@ export const profile = {
   name: "Paul Kühn",
   role: "Applikationsentwickler in Ausbildung",
   location: "Zürich, Switzerland",
-  school: "IMS Zürich",
+  school: "IMS Hottingen Zürich",
 
   whoami: [
     "Paul Kühn",
@@ -25,7 +25,7 @@ export const profile = {
   },
 
   stack: {
-    languages:    ["TypeScript", "Python"],
+    languages:    ["TypeScript", "Python", "Java"],
     frameworks:   ["Next.js", "Tailwind CSS"],
     databases:    ["MySQL"],
     tools:        ["Git / GitHub"],

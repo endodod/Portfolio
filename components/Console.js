@@ -27,7 +27,7 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
   const hasInit = useRef(false);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768 || navigator.maxTouchPoints > 0);
+    const check = () => setIsMobile(window.innerWidth < 768);
     check();
     window.addEventListener('resize', check);
     return () => window.removeEventListener('resize', check);
@@ -37,7 +37,7 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
     containerRef.current?.focus();
     if (hasInit.current) return;
     hasInit.current = true;
-    if (autoRun) runCommand("whoami");
+    if (autoRun) runCommand(typeof autoRun === "string" ? autoRun : "whoami");
   }, []);
 
   useEffect(() => {
