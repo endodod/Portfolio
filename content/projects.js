@@ -5,6 +5,17 @@
 
 export const projects = [
   {
+    name: "Portfolio",
+    dir: "portfolio/",
+    description: "This terminal-style developer portfolio",
+    stack: ["Next.js", "React", "JavaScript", "CSS", "Vercel", "Github API", "Open-Meteo"],
+    github: "github.com/endodod/Portfolio",
+    githubUrl: "https://github.com/endodod/Portfolio",
+    live: "paulkuehn.ch",
+    liveUrl: "https://paulkuehn.ch",
+    status: "active",
+  },
+  {
     name: "PortfolioAnalyzer",
     dir: "portfolio-analyzer/",
     description: "Web app for analyzing security portfolios with real-time stock data",
@@ -25,14 +36,12 @@ export const projects = [
     status: "stable",
   },
   {
-    name: "Portfolio",
-    dir: "portfolio/",
-    description: "This terminal-style developer portfolio",
-    stack: ["Next.js", "React", "JavaScript", "CSS", "Vercel", "Github API", "Open-Meteo"],
-    github: "github.com/endodod/Portfolio",
-    githubUrl: "https://github.com/endodod/Portfolio",
-    live: "paulkuehn.ch",
-    liveUrl: "https://paulkuehn.ch",
+    name: "Floored",
+    dir: "floored/",
+    description: "Browser-based roguelike casino game — survive escalating floors with rising minimum bets across eight casino games",
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Prisma", "PostgreSQL", "Zustand", "Framer Motion", "PixiJS", "Vercel"],
+    github: "github.com/endodod/Floored",
+    githubUrl: "https://github.com/endodod/Floored",
     status: "active",
   },
 ];
