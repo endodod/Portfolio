@@ -25,17 +25,6 @@ export const projects = [
     status: "stable",
   },
   {
-    name: "Cardshark",
-    dir: "cardshark/",
-    description: "A retro terminal blackjack game",
-    stack: ["Next.js", "JavaScript", "Tailwind CSS", "Vercel"],
-    github: "github.com/endodod/Cardshark",
-    githubUrl: "https://github.com/endodod/Cardshark",
-    live: "cardshark.paulkuehn.ch",
-    liveUrl: "https://cardshark.paulkuehn.ch",
-    status: "in-progress",
-  },
-  {
     name: "Portfolio",
     dir: "portfolio/",
     description: "This terminal-style developer portfolio",
