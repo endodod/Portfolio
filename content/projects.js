@@ -36,6 +36,15 @@ export const projects = [
     status: "stable",
   },
   {
+    name: "TFT Notes",
+    dir: "tft-notes/",
+    description: "Overwolf in-game overlay and web companion for Teamfight Tactics — auto-captures game events, records VODs with round-level bookmarks, and analyzes board states via OCR",
+    stack: ["React", "Tailwind CSS", "SQLite", "Tesseract.js", "Express", "Next.js", "TypeScript", "Prisma", "Overwolf"],
+    github: "github.com/endodod/tft-notes-overwolf",
+    githubUrl: "https://github.com/endodod/tft-notes-overwolf",
+    status: "stable",
+  },
+  {
     name: "Floored",
     dir: "floored/",
     description: "Browser-based roguelike casino game — survive escalating floors with rising minimum bets across eight casino games",
