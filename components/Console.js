@@ -176,7 +176,11 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
     // Commit prompt + command instantly; only typewrite the response
     setConsoleText((prev) => prev + `${PROMPT}${cmd}\n`);
     const navigate = redirect
-      ? () => redirect.startsWith("http") ? window.open(redirect, "_blank", "noopener,noreferrer") : router.push(redirect)
+      ? () => typeof redirect === "function"
+          ? redirect()
+          : redirect.startsWith("http")
+            ? window.open(redirect, "_blank", "noopener,noreferrer")
+            : router.push(redirect)
       : null;
     if (response) {
       const queueItem = navigate

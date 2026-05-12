@@ -612,11 +612,29 @@ a {
 .proj-entry {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
-  padding: 0.6rem 0.75rem;
+  gap: 0.25rem;
+  padding: 0.65rem 0.75rem;
   border: 1px solid rgba(63, 63, 70, 0.25);
   border-radius: 0.5rem;
   background: rgba(15, 23, 42, 0.4);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.proj-entry:hover {
+  border-color: rgba(129, 244, 225, 0.2);
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.proj-entry:focus-visible {
+  outline: 1px solid rgba(129, 244, 225, 0.4);
+  outline-offset: 2px;
 }
 
 .proj-entry-header {
@@ -637,26 +655,12 @@ a {
   font-weight: 600;
 }
 
-.proj-fields {
-  display: flex;
-  flex-direction: column;
-  gap: 0.05rem;
+.proj-entry-desc {
+  margin: 0;
   padding-left: 0.4rem;
-}
-
-.proj-fields .about-field {
-  align-items: flex-start;
-  flex-wrap: nowrap;
-}
-
-.proj-fields .about-key {
-  padding-top: 0.05rem;
-  min-width: 7rem;
-}
-
-.proj-fields .about-value {
-  flex: 1;
-  display: block;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .proj-status {
@@ -676,10 +680,6 @@ a {
   color: rgba(129, 244, 225, 0.85);
   border-color: rgba(129, 244, 225, 0.3);
   background: rgba(129, 244, 225, 0.06);
-}
-
-.proj-buttons {
-  display: none;
 }
 
 /* Inner scroll when projects page is inside fixed layout */
@@ -710,6 +710,83 @@ a {
   background: rgba(63, 63, 70, 0.8);
   border-radius: 3px;
 }
+
+/* ── Project Modal ───────────────────────────── */
+
+.proj-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(5, 5, 9, 0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.proj-modal {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 0.9rem;
+  border: 1px solid #1f2937;
+  overflow: hidden;
+  background: #080d1a;
+  animation: modal-open 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes modal-open {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.proj-modal-body {
+  padding: 1rem 1.4rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.proj-modal-body .about-key {
+  min-width: 7rem;
+}
+
+.proj-modal-body .about-field {
+  align-items: baseline;
+  flex-wrap: nowrap;
+}
+
+.proj-modal-field--wrap {
+  align-items: flex-start !important;
+}
+
+.proj-modal-field--tags {
+  align-items: flex-start !important;
+}
+
+.proj-modal-field--tags .about-value {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.proj-modal-hint {
+  margin: 0.85rem 0 0;
+  color: rgba(148, 163, 184, 0.35);
+  font-size: 0.73rem;
+}
+
+/* ── End Project Modal ───────────────────────── */
 
 /* ── End Projects page ───────────────────────── */
 
@@ -788,49 +865,16 @@ a {
     grid-template-columns: 1fr;
   }
 
-  /* Description row: hide label, show value full-width */
-  .proj-field--description .about-key,
-  .proj-field--description .about-sep {
-    display: none;
+  /* Modal: tighten padding on small screens */
+  .proj-modal-backdrop {
+    padding: 1rem;
+    align-items: flex-end;
   }
 
-  .proj-field--description .about-value {
-    display: block;
-    width: 100%;
-  }
-
-  /* Hide stack row on mobile to save space */
-  .proj-field--stack {
-    display: none;
-  }
-
-  /* Hide link rows on mobile, show buttons instead */
-  .proj-field--github-link,
-  .proj-field--live-link {
-    display: none;
-  }
-
-  .proj-buttons {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.35rem;
-  }
-
-  .proj-btn {
-    padding: 0.35rem 0.85rem;
-    border-radius: 0.45rem;
-    border: 1px solid rgba(31, 41, 55, 0.9);
-    background: rgba(3, 7, 18, 0.96);
-    color: rgba(187, 247, 208, 0.9);
-    text-decoration: none;
-    font-size: 0.78rem;
-    font-family: inherit;
-    letter-spacing: 0.04em;
-  }
-
-  .proj-btn--live {
-    border-color: rgba(52, 211, 153, 0.45);
-    color: rgba(129, 244, 225, 0.85);
+  .proj-modal {
+    max-width: 100%;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   /* Stack section: keep key on same line, wrap tags within value column (no left-edge bleed) */
