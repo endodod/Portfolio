@@ -96,14 +96,6 @@ export default function ProjectModal({ project, onClose }) {
             </div>
           )}
 
-          {project.status && (
-            <div className="about-field">
-              <span className="about-key">status</span>
-              <span className="about-sep">:</span>
-              <span className={`proj-status proj-status--${project.status}`}>{project.status}</span>
-            </div>
-          )}
-
           <p className="proj-modal-hint">press [esc] or click outside to close</p>
         </div>
       </div>

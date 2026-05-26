@@ -13,7 +13,6 @@ export const projects = [
     githubUrl: "https://github.com/endodod/Portfolio",
     live: "paulkuehn.ch",
     liveUrl: "https://paulkuehn.ch",
-    status: "active",
   },
   {
     name: "PortfolioAnalyzer",
@@ -63,6 +62,5 @@ export const projects = [
     githubUrl: "https://github.com/endodod/Floored",
     live: "floored.paulkuehn.ch",
     liveUrl: "https://floored.paulkuehn.ch/",
-    status: "active",
   },
 ];
