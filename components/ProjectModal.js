@@ -51,18 +51,35 @@ export default function ProjectModal({ project, onClose }) {
             </span>
           </div>
 
-          <div className="about-field">
-            <span className="about-key">github</span>
-            <span className="about-sep">:</span>
-            <a
-              className="about-value about-value--link"
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {project.github}
-            </a>
-          </div>
+          {project.repos ? (
+            project.repos.map((r) => (
+              <div className="about-field" key={r.label}>
+                <span className="about-key">{r.label}</span>
+                <span className="about-sep">:</span>
+                <a
+                  className="about-value about-value--link"
+                  href={r.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {r.github}
+                </a>
+              </div>
+            ))
+          ) : (
+            <div className="about-field">
+              <span className="about-key">github</span>
+              <span className="about-sep">:</span>
+              <a
+                className="about-value about-value--link"
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {project.github}
+              </a>
+            </div>
+          )}
 
           {project.live && (
             <div className="about-field">
