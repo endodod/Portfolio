@@ -37,6 +37,8 @@ export const projects = [
     dir: "sap/",
     description: "End-to-end reinforcement learning system for Super Auto Pets — terminal game simulation, PPO-trained agent, and public dashboard visualizing learned pet strategies and win-rates",
     stack: ["Python", "PyTorch", "Stable-Baselines3", "Next.js", "TypeScript", "Vercel"],
+    live: "sap.paulkuehn.ch",
+    liveUrl: "https://sap.paulkuehn.ch",
     repos: [
       { label: "sim", github: "github.com/endodod/sap-sim", githubUrl: "https://github.com/endodod/sap-sim" },
       { label: "agent", github: "github.com/endodod/sap-agent", githubUrl: "https://github.com/endodod/sap-agent" },
