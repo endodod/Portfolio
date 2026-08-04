@@ -539,12 +539,6 @@ a {
   font-weight: 600;
 }
 
-.about-section--stack .about-field:not(:first-of-type) {
-  border-top: 1px solid rgba(63, 63, 70, 0.2);
-  margin-top: 0.35rem;
-  padding-top: 0.35rem;
-}
-
 .about-value--link {
   color: rgba(129, 244, 225, 0.85);
   text-decoration: underline;
@@ -619,28 +613,24 @@ a {
 .proj-entry {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 1.6rem 1rem;
+  gap: 0.25rem;
+  padding: 0.65rem 0.75rem;
   border: 1px solid rgba(63, 63, 70, 0.25);
-  border-radius: 0.85rem;
+  border-radius: 0.5rem;
   background: rgba(15, 23, 42, 0.4);
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   font-family: inherit;
   font-size: inherit;
   color: inherit;
   transition:
     border-color 140ms ease,
-    background 140ms ease,
-    transform 140ms ease;
+    background 140ms ease;
 }
 
 .proj-entry:hover {
-  border-color: rgba(129, 244, 225, 0.3);
-  background: rgba(15, 23, 42, 0.7);
-  transform: translateY(-1px);
+  border-color: rgba(129, 244, 225, 0.2);
+  background: rgba(15, 23, 42, 0.65);
 }
 
 .proj-entry:focus-visible {
@@ -648,15 +638,41 @@ a {
   outline-offset: 2px;
 }
 
-.proj-icon {
-  font-size: 3rem;
-  line-height: 1;
+.proj-entry-mobile {
+  display: none;
+}
+
+.proj-entry-desktop {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.proj-entry-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.15rem;
+}
+
+.proj-dir {
+  color: rgba(63, 63, 70, 0.7);
+  font-size: 0.75rem;
+  flex-shrink: 0;
 }
 
 .proj-name {
   font-size: 0.95rem;
   font-weight: 600;
   color: #e5e7eb;
+}
+
+.proj-entry-desc {
+  margin: 0;
+  padding-left: 0.4rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 /* Inner scroll when projects page is inside fixed layout */
@@ -860,6 +876,54 @@ a {
 
   .proj-modal-back:active {
     background: rgba(15, 23, 42, 0.8);
+  }
+
+  /* Projects page: icon-only tiles on mobile instead of description cards */
+  .proj-entry {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.6rem 1rem;
+    border-radius: 0.85rem;
+    text-align: center;
+    transition:
+      border-color 140ms ease,
+      background 140ms ease,
+      transform 140ms ease;
+  }
+
+  .proj-entry:hover {
+    border-color: rgba(129, 244, 225, 0.3);
+    background: rgba(15, 23, 42, 0.7);
+    transform: translateY(-1px);
+  }
+
+  .proj-entry-desktop {
+    display: none;
+  }
+
+  .proj-entry-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .proj-entry-mobile .proj-icon {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .proj-entry-mobile .proj-name {
+    font-size: 0.95rem;
+  }
+
+  /* Thin separators between stack rows */
+  .about-section--stack .about-field:not(:first-of-type) {
+    border-top: 1px solid rgba(63, 63, 70, 0.2);
+    margin-top: 0.35rem;
+    padding-top: 0.35rem;
   }
 
   /* Keep field key on same line, wrap value text under itself (no left-edge bleed) */
