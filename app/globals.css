@@ -546,6 +546,11 @@ a {
   text-decoration-color: rgba(129, 244, 225, 0.3);
 }
 
+.about-value--muted {
+  color: rgba(148, 163, 184, 0.5);
+  font-style: italic;
+}
+
 .about-tag {
   display: inline-block;
   padding: 0.1rem 0.5rem;

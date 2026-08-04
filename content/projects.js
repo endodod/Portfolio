@@ -65,8 +65,7 @@ export const projects = [
     stack: ["React", "TypeScript", "Vite", "React Router"],
     github: "github.com/endodod/geeked",
     githubUrl: "https://github.com/endodod/geeked",
-    live: "geeked.paulkuehn.ch",
-    liveUrl: "https://geeked.paulkuehn.ch",
+    live: "coming soon",
   },
   {
     name: "SAP",
@@ -74,8 +73,7 @@ export const projects = [
     dir: "sap/",
     description: "End-to-end reinforcement learning system for Super Auto Pets — terminal game simulation, PPO-trained agent, and public dashboard visualizing learned pet strategies and win-rates",
     stack: ["Python", "PyTorch", "Stable-Baselines3", "Next.js", "TypeScript", "Vercel"],
-    live: "sap.paulkuehn.ch",
-    liveUrl: "https://sap.paulkuehn.ch",
+    live: "coming soon",
     repos: [
       { label: "sim", github: "github.com/endodod/sap-sim", githubUrl: "https://github.com/endodod/sap-sim" },
       { label: "agent", github: "github.com/endodod/sap-agent", githubUrl: "https://github.com/endodod/sap-agent" },

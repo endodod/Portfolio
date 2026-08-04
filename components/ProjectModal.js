@@ -85,14 +85,18 @@ export default function ProjectModal({ project, onClose }) {
             <div className="about-field">
               <span className="about-key">live</span>
               <span className="about-sep">:</span>
-              <a
-                className="about-value about-value--link"
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {project.live}
-              </a>
+              {project.liveUrl ? (
+                <a
+                  className="about-value about-value--link"
+                  href={project.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {project.live}
+                </a>
+              ) : (
+                <span className="about-value about-value--muted">{project.live}</span>
+              )}
             </div>
           )}
 
