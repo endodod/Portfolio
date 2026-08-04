@@ -60,13 +60,10 @@ export default function ProjectsPage() {
                     key={p.name}
                     className="proj-entry"
                     onClick={() => setActiveProject(p)}
-                    aria-label={`Open ${p.dir} details`}
+                    aria-label={`Open ${p.name} details`}
                   >
-                    <div className="proj-entry-header">
-                      <span className="proj-dir">drwxr-xr-x</span>
-                      <span className="proj-name about-value--accent">{p.dir}</span>
-                    </div>
-                    <p className="proj-entry-desc">{p.description}</p>
+                    <span className="proj-icon" aria-hidden="true">{p.icon}</span>
+                    <span className="proj-name">{p.name}</span>
                   </button>
                 ))}
               </div>

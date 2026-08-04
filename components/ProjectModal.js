@@ -97,6 +97,10 @@ export default function ProjectModal({ project, onClose }) {
           )}
 
           <p className="proj-modal-hint">press [esc] or click outside to close</p>
+
+          <button className="proj-modal-back" onClick={onClose}>
+            ← back
+          </button>
         </div>
       </div>
     </div>

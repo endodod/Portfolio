@@ -531,11 +531,18 @@ a {
   flex-wrap: wrap;
   gap: 0.4rem;
   align-items: center;
+  overflow-wrap: anywhere;
 }
 
 .about-value--accent {
   color: var(--accent);
   font-weight: 600;
+}
+
+.about-section--stack .about-field:not(:first-of-type) {
+  border-top: 1px solid rgba(63, 63, 70, 0.2);
+  margin-top: 0.35rem;
+  padding-top: 0.35rem;
 }
 
 .about-value--link {
@@ -612,24 +619,28 @@ a {
 .proj-entry {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.65rem 0.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.6rem 1rem;
   border: 1px solid rgba(63, 63, 70, 0.25);
-  border-radius: 0.5rem;
+  border-radius: 0.85rem;
   background: rgba(15, 23, 42, 0.4);
   cursor: pointer;
-  text-align: left;
+  text-align: center;
   font-family: inherit;
   font-size: inherit;
   color: inherit;
   transition:
     border-color 140ms ease,
-    background 140ms ease;
+    background 140ms ease,
+    transform 140ms ease;
 }
 
 .proj-entry:hover {
-  border-color: rgba(129, 244, 225, 0.2);
-  background: rgba(15, 23, 42, 0.65);
+  border-color: rgba(129, 244, 225, 0.3);
+  background: rgba(15, 23, 42, 0.7);
+  transform: translateY(-1px);
 }
 
 .proj-entry:focus-visible {
@@ -637,49 +648,15 @@ a {
   outline-offset: 2px;
 }
 
-.proj-entry-header {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 0.15rem;
-}
-
-.proj-dir {
-  color: rgba(63, 63, 70, 0.7);
-  font-size: 0.75rem;
-  flex-shrink: 0;
+.proj-icon {
+  font-size: 3rem;
+  line-height: 1;
 }
 
 .proj-name {
   font-size: 0.95rem;
   font-weight: 600;
-}
-
-.proj-entry-desc {
-  margin: 0;
-  padding-left: 0.4rem;
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  line-height: 1.5;
-}
-
-.proj-status {
-  font-size: 0.72rem;
-  padding: 0.05rem 0.45rem;
-  border-radius: 0.35rem;
-  border: 1px solid;
-}
-
-.proj-status--stable {
-  color: rgba(187, 247, 208, 0.8);
-  border-color: rgba(34, 197, 94, 0.3);
-  background: rgba(34, 197, 94, 0.07);
-}
-
-.proj-status--active {
-  color: rgba(129, 244, 225, 0.85);
-  border-color: rgba(129, 244, 225, 0.3);
-  background: rgba(129, 244, 225, 0.06);
+  color: #e5e7eb;
 }
 
 /* Inner scroll when projects page is inside fixed layout */
@@ -786,6 +763,10 @@ a {
   font-size: 0.73rem;
 }
 
+.proj-modal-back {
+  display: none;
+}
+
 /* ── End Project Modal ───────────────────────── */
 
 /* ── End Projects page ───────────────────────── */
@@ -812,31 +793,9 @@ a {
 }
 
 @media (max-width: 767px) {
-  /* On home page: only show contact.txt and help.txt, centered above/below console */
-  .desktop-window--notes {
-    display: block;
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    transform: translateX(-50%) rotate(1.5deg);
-    z-index: 1;
-  }
-
-  .desktop-window--help-console {
-    display: block;
-    position: fixed;
-    bottom: 1rem;
-    left: 50%;
-    top: auto;
-    right: auto;
-    width: 300px;
-    transform: translateX(-50%) rotate(-1deg);
-    z-index: 1;
-  }
-
-  /* Hide all other decorative windows on mobile */
+  /* Hide all decorative windows on mobile — console only */
+  .desktop-window--notes,
+  .desktop-window--help-console,
   .desktop-window--cal,
   .desktop-window--git,
   .desktop-window--status,
@@ -860,30 +819,56 @@ a {
     gap: 0;
   }
 
-  /* Stack project cards to single column */
-  .proj-grid {
-    grid-template-columns: 1fr;
+  /* Shift content slightly left to give long values (e.g. email) more room before the edge */
+  .about-body {
+    padding-inline: 0.9rem;
   }
 
-  /* Modal: tighten padding on small screens */
+  .about-top-row .about-key {
+    min-width: 5rem;
+  }
+
+  /* Modal: tighten padding on small screens, keep it centered on screen */
   .proj-modal-backdrop {
     padding: 1rem;
-    align-items: flex-end;
+    align-items: center;
   }
 
   .proj-modal {
     max-width: 100%;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
   }
 
-  /* Stack section: keep key on same line, wrap tags within value column (no left-edge bleed) */
-  .about-section--stack .about-field {
+  /* Hide the keyboard hint on touch screens, offer a tappable back button instead */
+  .proj-modal-hint {
+    display: none;
+  }
+
+  .proj-modal-back {
+    display: block;
+    width: 100%;
+    margin: 1.5rem 0 0.25rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(63, 63, 70, 0.4);
+    border-radius: 0.6rem;
+    background: rgba(15, 23, 42, 0.5);
+    color: rgba(129, 244, 225, 0.85);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .proj-modal-back:active {
+    background: rgba(15, 23, 42, 0.8);
+  }
+
+  /* Keep field key on same line, wrap value text under itself (no left-edge bleed) */
+  .about-body .about-field {
     flex-wrap: nowrap;
     align-items: flex-start;
   }
 
-  .about-section--stack .about-value {
+  .about-body .about-value {
     flex: 1;
     min-width: 0;
   }

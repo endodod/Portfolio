@@ -28,11 +28,9 @@ export const profile = {
     languages:    ["TypeScript", "Python", "Java"],
     frameworks:   ["Next.js", "Tailwind CSS"],
     databases:    ["MySQL"],
-    tools:        ["Git / GitHub"],
+    tools:        ["Git / GitHub", "Docker"],
     certificates: [
       "Abacus «Anwender» 2024",
-      "Claude 101",
-      "Claude Code in Action",
     ],
   },
 };
