@@ -11,12 +11,19 @@ const QUICK_COMMANDS = [
 export default function ProjectsPage() {
   const [activeProject, setActiveProject] = useState(null);
 
+  const labelOrder = { "live": 0, "self host": 1, "coming soon": 2 };
+  const sortedProjects = [...projects].sort((a, b) => {
+    const aOrder = labelOrder[a.label] ?? 999;
+    const bOrder = labelOrder[b.label] ?? 999;
+    return aOrder - bOrder;
+  });
+
   useEffect(() => {
     if (window.innerWidth < 768) window.scrollTo(0, 0);
   }, []);
 
   const PROJECT_FILES = Object.fromEntries(
-    projects.map((p) => {
+    sortedProjects.map((p) => {
       const filename = p.dir.replace(/\/$/, "") + ".txt";
       return [filename, { text: `opening ${p.dir}...`, redirect: () => setActiveProject(p) }];
     })
@@ -55,7 +62,7 @@ export default function ProjectsPage() {
 
             <div className="projects-body">
               <div className="proj-grid">
-                {projects.map((p) => (
+                {sortedProjects.map((p) => (
                   <button
                     key={p.name}
                     className="proj-entry"
@@ -70,6 +77,7 @@ export default function ProjectsPage() {
                       <div className="proj-entry-header">
                         <span className="proj-dir">drwxr-xr-x</span>
                         <span className="proj-name about-value--accent">{p.dir}</span>
+                        {p.label && <span className={`proj-label proj-label--${p.label.replace(/\s+/g, '-')}`}>{p.label}</span>}
                       </div>
                       <p className="proj-entry-desc">{p.description}</p>
                     </div>

@@ -14,6 +14,7 @@ export const projects = [
     githubUrl: "https://github.com/endodod/Portfolio",
     live: "paulkuehn.ch",
     liveUrl: "https://paulkuehn.ch",
+    label: "live",
   },
   {
     name: "PortfolioAnalyzer",
@@ -23,6 +24,7 @@ export const projects = [
     stack: ["Python", "Flask", "MySQL", "Docker", "Bootstrap 5", "yfinance"],
     github: "github.com/endodod/PortfolioAnalyzer",
     githubUrl: "https://github.com/endodod/PortfolioAnalyzer",
+    label: "self host",
   },
   {
     name: "Floored",
@@ -34,6 +36,7 @@ export const projects = [
     githubUrl: "https://github.com/endodod/Floored",
     live: "floored.paulkuehn.ch",
     liveUrl: "https://floored.paulkuehn.ch/",
+    label: "live",
   },
   {
     name: "BlackJack",
@@ -45,6 +48,7 @@ export const projects = [
     githubUrl: "https://github.com/endodod/BlackJack",
     live: "blackjack.paulkuehn.ch",
     liveUrl: "https://blackjack.paulkuehn.ch",
+    label: "live",
   },
   {
     name: "WikiGhost",
@@ -56,6 +60,7 @@ export const projects = [
     githubUrl: "https://github.com/endodod/WikiGhost",
     live: "wikighost.paulkuehn.ch",
     liveUrl: "https://wikighost.paulkuehn.ch",
+    label: "live",
   },
   {
     name: "Geeked",
@@ -66,6 +71,7 @@ export const projects = [
     github: "github.com/endodod/geeked",
     githubUrl: "https://github.com/endodod/geeked",
     live: "coming soon",
+    label: "coming soon",
   },
   {
     name: "SAP",
@@ -74,6 +80,7 @@ export const projects = [
     description: "EOE reinforcement learning system for Super Auto Pets: terminal game simulation, PPO-trained agent, and public dashboard visualizing findings",
     stack: ["Python", "PyTorch", "Stable-Baselines3", "Next.js", "TypeScript", "Vercel"],
     live: "coming soon",
+    label: "coming soon",
     repos: [
       { label: "sim", github: "github.com/endodod/sap-sim", githubUrl: "https://github.com/endodod/sap-sim" },
       { label: "agent", github: "github.com/endodod/sap-agent", githubUrl: "https://github.com/endodod/sap-agent" },
@@ -88,6 +95,7 @@ export const projects = [
     stack: ["JavaScript", "HTML5", "Canvas"],
     github: "github.com/endodod/vectorrace",
     githubUrl: "https://github.com/endodod/vectorrace",
+    label: "self host",
   },
   {
     name: "MyDailies",
@@ -97,4 +105,5 @@ export const projects = [
     stack: ["JavaScript", "React", "Next.js"],
     github: "github.com/endodod/MyDailies",
     githubUrl: "https://github.com/endodod/MyDailies",
+    label: "coming soon",
   },];
