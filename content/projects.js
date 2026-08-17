@@ -80,4 +80,21 @@ export const projects = [
       { label: "dashboard", github: "github.com/endodod/sap-dashboard", githubUrl: "https://github.com/endodod/sap-dashboard" },
     ],
   },
-];
+  {
+    name: "VectorRace",
+    icon: "↗",
+    dir: "vectorrace/",
+    description: "Grid-based vector race editor and shortest-path solver. Create your track and the solver finds the fastest legal run",
+    stack: ["JavaScript", "HTML5", "Canvas"],
+    github: "github.com/endodod/vectorrace",
+    githubUrl: "https://github.com/endodod/vectorrace",
+  },
+  {
+    name: "MyDailies",
+    icon: "🔥",
+    dir: "mydailies/",
+    description: "Streak tracker for daily puzzles such as Wordle",
+    stack: ["JavaScript", "React", "Next.js"],
+    github: "github.com/endodod/MyDailies",
+    githubUrl: "https://github.com/endodod/MyDailies",
+  },];
