@@ -84,7 +84,7 @@ export const projects = [
     name: "VectorRace",
     icon: "↗",
     dir: "vectorrace/",
-    description: "Grid-based vector race editor and shortest-path solver. Create your track and the solver finds the fastest legal run",
+    description: "Grid-based vector race editor and shortest-path solver",
     stack: ["JavaScript", "HTML5", "Canvas"],
     github: "github.com/endodod/vectorrace",
     githubUrl: "https://github.com/endodod/vectorrace",
