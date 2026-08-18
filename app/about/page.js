@@ -1,6 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
 import Console from "@/components/Console";
+import DesktopWindow from "@/components/DesktopWindow";
+import useIsDesktop from "@/hooks/useIsDesktop";
+import useWindowStack from "@/hooks/useWindowStack";
 import { profile } from "@/content/profile";
 
 const { name, role, location, school, contact, stack } = profile;
@@ -8,6 +11,14 @@ const { name, role, location, school, contact, stack } = profile;
 const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
 ];
+
+const WINDOW_IDS = ["about-lang", "about-spotify", "about", "console"];
+const DEFAULT_POS = {
+  "about-lang": { x: 840, y: 522, width: 320, height: 133 },
+  "about-spotify": { x: -190, y: 265, width: 320, height: 104 },
+  about: { x: 40, y: 40, width: 900, height: 357 },
+  console: { x: 130, y: 417, width: 720, height: 215 },
+};
 
 const TAG_COLORS = [
   "about-tag--c1", "about-tag--c2", "about-tag--c3", "about-tag--c4", "about-tag--c5",
@@ -19,6 +30,8 @@ function tagClass(rowIndex) {
 }
 
 export default function AboutPage() {
+  const isDesktop = useIsDesktop();
+  const { zIndexOf, focus } = useWindowStack(WINDOW_IDS);
   const [topArtists, setTopArtists] = useState(["loading..."]);
 
   useEffect(() => {
@@ -33,39 +46,48 @@ export default function AboutPage() {
       <div className="home-shell home-shell--stack">
 
         {/* Background decorative windows */}
-        <section className="desktop-window desktop-window--about-lang" aria-hidden="true">
-          <div className="desktop-header">
-            <span className="desktop-title">languages.txt</span>
-          </div>
-          <div className="desktop-body">
-            <pre>
-              <span className="desktop-line text-green">## spoken languages</span>
-              <span className="desktop-line"> </span>
-              <span className="desktop-line">german   {"██████████"}  C2</span>
-              <span className="desktop-line">english  {"████████░░"}  C1</span>
-              <span className="desktop-line">french   {"█████░░░░░"}  B1</span>
-            </pre>
-          </div>
-        </section>
+        {isDesktop && (
+          <DesktopWindow defaultPos={DEFAULT_POS["about-lang"]} zIndex={zIndexOf("about-lang")} onFocus={() => focus("about-lang")}>
+            <section className="desktop-window desktop-window--about-lang">
+              <div className="desktop-header window-drag-handle">
+                <span className="desktop-title">languages.txt</span>
+              </div>
+              <div className="desktop-body">
+                <pre>
+                  <span className="desktop-line text-green">## spoken languages</span>
+                  <span className="desktop-line"> </span>
+                  <span className="desktop-line">german   {"██████████"}  C2</span>
+                  <span className="desktop-line">english  {"████████░░"}  C1</span>
+                  <span className="desktop-line">french   {"█████░░░░░"}  B1</span>
+                </pre>
+              </div>
+            </section>
+          </DesktopWindow>
+        )}
 
-        <section className="desktop-window desktop-window--about-spotify" aria-hidden="true">
-          <div className="desktop-header">
-            <span className="desktop-title">spotify.txt</span>
-          </div>
-          <div className="desktop-body">
-            <pre>
-              <span className="desktop-line text-green">## top artists this month</span>
-              <span className="desktop-line"> </span>
-              {topArtists.map((line, i) => (
-                <span key={i} className="desktop-line">{i + 1}. {line}</span>
-              ))}
-            </pre>
-          </div>
-        </section>
+        {isDesktop && (
+          <DesktopWindow defaultPos={DEFAULT_POS["about-spotify"]} zIndex={zIndexOf("about-spotify")} onFocus={() => focus("about-spotify")}>
+            <section className="desktop-window desktop-window--about-spotify">
+              <div className="desktop-header window-drag-handle">
+                <span className="desktop-title">spotify.txt</span>
+              </div>
+              <div className="desktop-body">
+                <pre>
+                  <span className="desktop-line text-green">## top artists this month</span>
+                  <span className="desktop-line"> </span>
+                  {topArtists.map((line, i) => (
+                    <span key={i} className="desktop-line">{i + 1}. {line}</span>
+                  ))}
+                </pre>
+              </div>
+            </section>
+          </DesktopWindow>
+        )}
 
         {/* Main about file viewer */}
-        <section className="about-window" aria-label="About me — file viewer">
-          <div className="console-header">
+        <DesktopWindow active={isDesktop} defaultPos={DEFAULT_POS.about} zIndex={zIndexOf("about")} onFocus={() => focus("about")} minWidth={480} minHeight={320}>
+        <section className={`about-window${isDesktop ? " about-window--rnd" : ""}`} aria-label="About me — file viewer">
+          <div className={`console-header${isDesktop ? " window-drag-handle" : ""}`}>
             <span className="console-dot console-dot--red" />
             <span className="console-dot console-dot--yellow" />
             <span className="console-dot console-dot--green" />
@@ -160,8 +182,17 @@ export default function AboutPage() {
             </div>
           </div>
         </section>
+        </DesktopWindow>
 
-        <Console quickCommands={QUICK_COMMANDS} autoRun={false} dirs={{}} />
+        <Console
+          quickCommands={QUICK_COMMANDS}
+          autoRun={false}
+          dirs={{}}
+          draggable={isDesktop}
+          defaultPos={DEFAULT_POS.console}
+          zIndex={zIndexOf("console")}
+          onFocus={() => focus("console")}
+        />
       </div>
     </main>
   );

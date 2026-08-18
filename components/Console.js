@@ -2,12 +2,23 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { profile } from "@/content/profile";
+import DesktopWindow from "@/components/DesktopWindow";
 
 const { whoami } = profile;
 const PROMPT = "paul @ portfolio ~ $ ";
 const KNOWN_BINS = ["help", "ls", "cd", "cat", "nano", "whoami", "clear", "pwd", "echo"];
 
-export default function Console({ quickCommands = [], autoRun = true, files = {}, dirs = {}, readOnly = false }) {
+export default function Console({
+  quickCommands = [],
+  autoRun = true,
+  files = {},
+  dirs = {},
+  readOnly = false,
+  draggable = false,
+  defaultPos,
+  zIndex,
+  onFocus,
+}) {
   const router = useRouter();
   const [consoleText, setConsoleText] = useState("");
   const [queue, setQueue] = useState([]);
@@ -335,15 +346,16 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
   };
 
   return (
+    <DesktopWindow active={draggable} defaultPos={defaultPos} zIndex={zIndex} onFocus={onFocus} minWidth={360} minHeight={190}>
     <section
-      className="console-window"
+      className={`console-window${draggable ? " console-window--rnd" : ""}`}
       ref={containerRef}
       tabIndex={readOnly || isMobile ? -1 : 0}
       onKeyDown={readOnly ? undefined : handleKeyDown}
       onClick={() => !readOnly && !isMobile && containerRef.current?.focus()}
       aria-label="Interactive console"
     >
-      <div className="console-header">
+      <div className={`console-header${draggable ? " window-drag-handle" : ""}`}>
         <span className="console-dot console-dot--red" />
         <span className="console-dot console-dot--yellow" />
         <span className="console-dot console-dot--green" />
@@ -392,5 +404,6 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
         )}
       </div>
     </section>
+    </DesktopWindow>
   );
 }

@@ -1,7 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Console from "@/components/Console";
+import DesktopWindow from "@/components/DesktopWindow";
 import ProjectModal from "@/components/ProjectModal";
+import useIsDesktop from "@/hooks/useIsDesktop";
+import useWindowStack from "@/hooks/useWindowStack";
 import { projects } from "@/content/projects";
 
 const QUICK_COMMANDS = [
@@ -10,7 +13,16 @@ const QUICK_COMMANDS = [
 
 const FEATURED_PROJECTS = ["Portfolio", "PortfolioAnalyzer", "Floored", "BlackJack"];
 
+const WINDOW_IDS = ["proj-pkg", "projects", "console"];
+const DEFAULT_POS = {
+  "proj-pkg": { x: -160, y: 508, width: 320, height: 178 },
+  projects: { x: 40, y: 70, width: 900, height: 589 },
+  console: { x: 130, y: 679, width: 720, height: 215 },
+};
+
 export default function ProjectsPage() {
+  const isDesktop = useIsDesktop();
+  const { zIndexOf, focus } = useWindowStack(WINDOW_IDS);
   const [activeProject, setActiveProject] = useState(null);
 
   const labelOrder = { "live": 0, "self host": 1, "coming soon": 2 };
@@ -52,26 +64,31 @@ export default function ProjectsPage() {
             </a>.
           </p>
 
-          <section className="desktop-window desktop-window--proj-pkg" aria-hidden="true">
-            <div className="desktop-header">
-              <span className="desktop-title">requirements.txt</span>
-            </div>
-            <div className="desktop-body">
-              <pre>
-                <span className="desktop-line text-green">Flask==3.1.1</span>
-                <span className="desktop-line">Flask-Login==0.6.3</span>
-                <span className="desktop-line">Flask-WTF==1.2.1</span>
-                <span className="desktop-line">Werkzeug==3.1.3</span>
-                <span className="desktop-line">mysql-connector-python==8.1.0</span>
-                <span className="desktop-line">yfinance==0.2.65</span>
-                <span className="desktop-line">python-dotenv==1.1.1</span>
-                <span className="desktop-line">gunicorn==21.2.0</span>
-              </pre>
-            </div>
-          </section>
+          {isDesktop && (
+            <DesktopWindow defaultPos={DEFAULT_POS["proj-pkg"]} zIndex={zIndexOf("proj-pkg")} onFocus={() => focus("proj-pkg")}>
+              <section className="desktop-window desktop-window--proj-pkg">
+                <div className="desktop-header window-drag-handle">
+                  <span className="desktop-title">requirements.txt</span>
+                </div>
+                <div className="desktop-body">
+                  <pre>
+                    <span className="desktop-line text-green">Flask==3.1.1</span>
+                    <span className="desktop-line">Flask-Login==0.6.3</span>
+                    <span className="desktop-line">Flask-WTF==1.2.1</span>
+                    <span className="desktop-line">Werkzeug==3.1.3</span>
+                    <span className="desktop-line">mysql-connector-python==8.1.0</span>
+                    <span className="desktop-line">yfinance==0.2.65</span>
+                    <span className="desktop-line">python-dotenv==1.1.1</span>
+                    <span className="desktop-line">gunicorn==21.2.0</span>
+                  </pre>
+                </div>
+              </section>
+            </DesktopWindow>
+          )}
 
-          <section className="projects-window" aria-label="My projects — directory listing">
-            <div className="console-header">
+          <DesktopWindow active={isDesktop} defaultPos={DEFAULT_POS.projects} zIndex={zIndexOf("projects")} onFocus={() => focus("projects")} minWidth={480} minHeight={320}>
+          <section className={`projects-window${isDesktop ? " projects-window--rnd" : ""}`} aria-label="My projects — directory listing">
+            <div className={`console-header${isDesktop ? " window-drag-handle" : ""}`}>
               <span className="console-dot console-dot--red" />
               <span className="console-dot console-dot--yellow" />
               <span className="console-dot console-dot--green" />
@@ -119,8 +136,18 @@ export default function ProjectsPage() {
               </a>
             </div>
           </section>
+          </DesktopWindow>
 
-          <Console quickCommands={QUICK_COMMANDS} autoRun={false} files={PROJECT_FILES} dirs={{}} />
+          <Console
+            quickCommands={QUICK_COMMANDS}
+            autoRun={false}
+            files={PROJECT_FILES}
+            dirs={{}}
+            draggable={isDesktop}
+            defaultPos={DEFAULT_POS.console}
+            zIndex={zIndexOf("console")}
+            onFocus={() => focus("console")}
+          />
         </div>
       </main>
 
