@@ -12,7 +12,6 @@ export const projects = [
     stack: ["Next.js", "React", "JavaScript", "CSS", "Vercel", "Github API", "Open-Meteo"],
     highlights: [
       "Interactive CLI with command history",
-      "Live weather + git activity via public APIs",
       "Fully responsive design",
     ],
     github: "github.com/endodod/Portfolio",
@@ -30,7 +29,6 @@ export const projects = [
     highlights: [
       "Multi-currency portfolio tracking",
       "Interactive charts and analytics",
-      "One-command Docker deployment",
     ],
     github: "github.com/endodod/PortfolioAnalyzer",
     githubUrl: "https://github.com/endodod/PortfolioAnalyzer",
@@ -45,7 +43,6 @@ export const projects = [
     highlights: [
       "Freeplay, Survival, and Challenges modes",
       "18 casino games across every mode",
-      "Meta-currency shop between runs",
     ],
     github: "github.com/endodod/Floored",
     githubUrl: "https://github.com/endodod/Floored",
@@ -62,7 +59,6 @@ export const projects = [
     highlights: [
       "Full blackjack game loop",
       "Real-time multiplayer over WebSockets",
-      "Basic strategy trainer and leaderboard",
     ],
     github: "github.com/endodod/BlackJack",
     githubUrl: "https://github.com/endodod/BlackJack",
