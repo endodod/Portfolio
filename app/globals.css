@@ -346,6 +346,11 @@ a {
   color: #e5e7eb;
 }
 
+.console-prompt {
+  color: rgba(129, 244, 225, 0.85);
+  font-weight: 600;
+}
+
 .console-cursor {
   display: inline-block;
   border-bottom: 2px solid var(--accent);
@@ -449,6 +454,13 @@ a {
   bottom: 4%;
   right: -180px;
   transform: rotate(2deg);
+  opacity: 0.88;
+}
+
+.desktop-window--about-spotify {
+  top: 50%;
+  left: -190px;
+  transform: translateY(-50%) rotate(-2deg);
   opacity: 0.88;
 }
 
@@ -562,22 +574,36 @@ a {
   line-height: 1.5;
 }
 
-.about-tag--cert {
-  border-color: rgba(129, 244, 225, 0.25);
-  color: rgba(129, 244, 225, 0.85);
-  background: rgba(129, 244, 225, 0.05);
+/* One color per stack row, so each row's tags read as a group and contrast
+   with the rows above/below. */
+.about-tag--c1 {
+  border-color: rgba(129, 244, 225, 0.35);
+  color: rgba(129, 244, 225, 0.9);
+  background: rgba(129, 244, 225, 0.06);
 }
 
-.about-intro-text {
-  margin: 0;
-  min-height: 4.5rem;
-  color: #e5e7eb;
+.about-tag--c2 {
+  border-color: rgba(250, 204, 21, 0.3);
+  color: rgba(250, 204, 21, 0.85);
+  background: rgba(250, 204, 21, 0.05);
 }
 
-.about-bottom-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
+.about-tag--c3 {
+  border-color: rgba(196, 181, 253, 0.3);
+  color: rgba(196, 181, 253, 0.85);
+  background: rgba(196, 181, 253, 0.05);
+}
+
+.about-tag--c4 {
+  border-color: rgba(125, 211, 252, 0.3);
+  color: rgba(125, 211, 252, 0.85);
+  background: rgba(125, 211, 252, 0.05);
+}
+
+.about-tag--c5 {
+  border-color: rgba(244, 114, 182, 0.3);
+  color: rgba(244, 114, 182, 0.85);
+  background: rgba(244, 114, 182, 0.05);
 }
 
 .about-nav {
@@ -922,6 +948,7 @@ a {
   .desktop-window--git,
   .desktop-window--status,
   .desktop-window--about-lang,
+  .desktop-window--about-spotify,
   .desktop-window--proj-pkg {
     display: none;
   }
@@ -944,19 +971,10 @@ a {
     display: block;
   }
 
-  /* Stack about identity/intro sections vertically */
+  /* Stack about identity/contact sections vertically */
   .about-top-row {
     grid-template-columns: 1fr;
     gap: 0;
-  }
-
-  /* Contact block goes full width on small screens instead of hugging the right edge */
-  .about-bottom-row {
-    justify-content: stretch;
-  }
-
-  .about-bottom-row .about-section {
-    width: 100%;
   }
 
   /* Shift content slightly left to give long values (e.g. email) more room before the edge */

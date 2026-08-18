@@ -29,7 +29,14 @@ export default function ProjectsPage() {
   const PROJECT_FILES = Object.fromEntries(
     sortedProjects.map((p) => {
       const filename = p.dir.replace(/\/$/, "") + ".txt";
-      return [filename, { text: `opening ${p.dir}...`, redirect: () => setActiveProject(p) }];
+      const content = [
+        p.name,
+        p.label ? `status: ${p.label}` : null,
+        "",
+        p.description,
+        ...(p.highlights ? ["", ...p.highlights.map((h) => `- ${h}`)] : []),
+      ].filter((line) => line !== null).join("\n");
+      return [filename, { content, open: () => setActiveProject(p) }];
     })
   );
 

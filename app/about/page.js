@@ -1,18 +1,33 @@
 "use client";
+import { useEffect, useState } from "react";
 import Console from "@/components/Console";
 import { profile } from "@/content/profile";
 
 const { name, role, location, school, contact, stack } = profile;
 
-const ABOUT_FILES = {
-  "contact.txt": { text: "opening contact.txt...", redirect: "/contact" },
-};
-
 const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
 ];
 
+const TAG_COLORS = [
+  "about-tag--c1", "about-tag--c2", "about-tag--c3", "about-tag--c4", "about-tag--c5",
+];
+
+// Each stack row gets one consistent color, distinct from the row above/below it.
+function tagClass(rowIndex) {
+  return `about-tag ${TAG_COLORS[rowIndex % TAG_COLORS.length]}`;
+}
+
 export default function AboutPage() {
+  const [topArtists, setTopArtists] = useState(["loading..."]);
+
+  useEffect(() => {
+    fetch("/api/spotify-top")
+      .then((r) => r.json())
+      .then((d) => setTopArtists(d.error ? ["(unavailable)"] : d.artists.map((a) => a.name)))
+      .catch(() => setTopArtists(["(unavailable)"]));
+  }, []);
+
   return (
     <main className="home home--fixed console">
       <div className="home-shell home-shell--stack">
@@ -29,6 +44,21 @@ export default function AboutPage() {
               <span className="desktop-line">german   {"██████████"}  C2</span>
               <span className="desktop-line">english  {"████████░░"}  C1</span>
               <span className="desktop-line">french   {"█████░░░░░"}  B1</span>
+            </pre>
+          </div>
+        </section>
+
+        <section className="desktop-window desktop-window--about-spotify" aria-hidden="true">
+          <div className="desktop-header">
+            <span className="desktop-title">spotify.txt</span>
+          </div>
+          <div className="desktop-body">
+            <pre>
+              <span className="desktop-line text-green">## top artists this month</span>
+              <span className="desktop-line"> </span>
+              {topArtists.map((line, i) => (
+                <span key={i} className="desktop-line">{i + 1}. {line}</span>
+              ))}
             </pre>
           </div>
         </section>
@@ -70,54 +100,6 @@ export default function AboutPage() {
               </div>
 
               <div className="about-section">
-                <span className="about-comment">## intro</span>
-                <p className="about-intro-text"></p>
-              </div>
-            </div>
-
-            {/* stack full width below */}
-            <div className="about-section about-section--stack">
-              <span className="about-comment">## stack</span>
-              <div className="about-field">
-                <span className="about-key">languages</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">
-                  {stack.languages.map((l) => <span className="about-tag" key={l}>{l}</span>)}
-                </span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">frameworks</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">
-                  {stack.frameworks.map((f) => <span className="about-tag" key={f}>{f}</span>)}
-                </span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">databases</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">
-                  {stack.databases.map((d) => <span className="about-tag" key={d}>{d}</span>)}
-                </span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">tools</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">
-                  {stack.tools.map((t) => <span className="about-tag" key={t}>{t}</span>)}
-                </span>
-              </div>
-              <div className="about-field">
-                <span className="about-key">certificates</span>
-                <span className="about-sep">:</span>
-                <span className="about-value">
-                  {stack.certificates.map((c) => <span className="about-tag about-tag--cert" key={c}>{c}</span>)}
-                </span>
-              </div>
-            </div>
-
-            {/* contact, bottom right */}
-            <div className="about-bottom-row">
-              <div className="about-section">
                 <span className="about-comment">## contact</span>
                 <div className="about-field">
                   <span className="about-key">email</span>
@@ -136,10 +118,50 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
+
+            {/* stack full width below */}
+            <div className="about-section about-section--stack">
+              <span className="about-comment">## stack</span>
+              <div className="about-field">
+                <span className="about-key">languages</span>
+                <span className="about-sep">:</span>
+                <span className="about-value">
+                  {stack.languages.map((l) => <span className={tagClass(0)} key={l}>{l}</span>)}
+                </span>
+              </div>
+              <div className="about-field">
+                <span className="about-key">frameworks</span>
+                <span className="about-sep">:</span>
+                <span className="about-value">
+                  {stack.frameworks.map((f) => <span className={tagClass(1)} key={f}>{f}</span>)}
+                </span>
+              </div>
+              <div className="about-field">
+                <span className="about-key">databases</span>
+                <span className="about-sep">:</span>
+                <span className="about-value">
+                  {stack.databases.map((d) => <span className={tagClass(2)} key={d}>{d}</span>)}
+                </span>
+              </div>
+              <div className="about-field">
+                <span className="about-key">tools</span>
+                <span className="about-sep">:</span>
+                <span className="about-value">
+                  {stack.tools.map((t) => <span className={tagClass(3)} key={t}>{t}</span>)}
+                </span>
+              </div>
+              <div className="about-field">
+                <span className="about-key">certificates</span>
+                <span className="about-sep">:</span>
+                <span className="about-value">
+                  {stack.certificates.map((c) => <span className={tagClass(4)} key={c}>{c}</span>)}
+                </span>
+              </div>
+            </div>
           </div>
         </section>
 
-        <Console quickCommands={QUICK_COMMANDS} autoRun={false} files={ABOUT_FILES} dirs={{}} noLs />
+        <Console quickCommands={QUICK_COMMANDS} autoRun={false} dirs={{}} />
       </div>
     </main>
   );

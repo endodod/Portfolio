@@ -5,6 +5,8 @@ import { profile } from "@/content/profile";
 
 const { name, location, contact } = profile;
 
+const DIRS = { "my-projects": "/projects", "about-me": "/about" };
+
 function buildCalendarCells(now) {
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -20,7 +22,7 @@ function buildCalendarCells(now) {
 
 const QUICK_COMMANDS = [
   { label: "My Projects", command: "cd my-projects/" },
-  { label: "About Me", command: "cat about-me.txt" },
+  { label: "About Me", command: "cd about-me/" },
 ];
 
 export default function Home() {
@@ -67,8 +69,8 @@ export default function Home() {
               <span className="desktop-line">paul @ portfolio ~ $ help</span>
               <span className="desktop-line">help     - show available commands</span>
               <span className="desktop-line">ls       - list files in current directory</span>
-              <span className="desktop-line">cd       - change directory (e.g. cd my-projects/)</span>
-              <span className="desktop-line">cat      - display file (e.g. cat about-me.txt)</span>
+              <span className="desktop-line">cd       - change directory</span>
+              <span className="desktop-line">nano     - open a file</span>
               <span className="desktop-line">whoami   - show current user info</span>
               <span className="desktop-line">clear    - clear the console</span>
             </pre>
@@ -139,7 +141,7 @@ export default function Home() {
           </div>
         </section>
 
-        <Console quickCommands={QUICK_COMMANDS} />
+        <Console quickCommands={QUICK_COMMANDS} dirs={DIRS} />
       </div>
     </main>
   );
