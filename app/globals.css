@@ -568,6 +568,18 @@ a {
   background: rgba(129, 244, 225, 0.05);
 }
 
+.about-intro-text {
+  margin: 0;
+  min-height: 4.5rem;
+  color: #e5e7eb;
+}
+
+.about-bottom-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
 .about-nav {
   margin-top: 1.6rem;
   display: flex;
@@ -613,6 +625,64 @@ a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.75rem;
   margin-top: 0.6rem;
+}
+
+.proj-github-note {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.proj-github-note--inline {
+  display: none;
+  margin-top: 1.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(63, 63, 70, 0.4);
+  border-radius: 0.6rem;
+  background: rgba(15, 23, 42, 0.5);
+  color: rgba(129, 244, 225, 0.85);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+}
+
+.proj-github-note--inline:active {
+  background: rgba(15, 23, 42, 0.8);
+}
+
+.proj-github-note a {
+  color: rgba(129, 244, 225, 0.85);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(129, 244, 225, 0.3);
+}
+
+.proj-entry-highlights {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.proj-entry-highlights li {
+  position: relative;
+  padding-left: 0.9rem;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.proj-entry-highlights li::before {
+  content: "›";
+  position: absolute;
+  left: 0.15rem;
+  color: rgba(129, 244, 225, 0.6);
 }
 
 .proj-entry {
@@ -672,6 +742,10 @@ a {
   color: #e5e7eb;
 }
 
+.proj-entry-desktop .proj-name {
+  font-size: 1.08rem;
+}
+
 .proj-label {
   font-size: 0.7rem;
   font-weight: 500;
@@ -701,9 +775,10 @@ a {
 .proj-entry-desc {
   margin: 0;
   padding-left: 0.4rem;
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  line-height: 1.5;
+  color: #e5e7eb;
+  font-size: 0.98rem;
+  font-weight: 500;
+  line-height: 1.45;
 }
 
 /* Inner scroll when projects page is inside fixed layout */
@@ -860,10 +935,28 @@ a {
     padding-bottom: 2rem;
   }
 
-  /* Stack about identity/contact sections vertically */
+  /* On mobile, the GitHub note moves inside the projects window, below the grid */
+  .proj-github-note--top {
+    display: none;
+  }
+
+  .proj-github-note--inline {
+    display: block;
+  }
+
+  /* Stack about identity/intro sections vertically */
   .about-top-row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  /* Contact block goes full width on small screens instead of hugging the right edge */
+  .about-bottom-row {
+    justify-content: stretch;
+  }
+
+  .about-bottom-row .about-section {
+    width: 100%;
   }
 
   /* Shift content slightly left to give long values (e.g. email) more room before the edge */

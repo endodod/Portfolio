@@ -70,22 +70,8 @@ export default function AboutPage() {
               </div>
 
               <div className="about-section">
-                <span className="about-comment">## contact</span>
-                <div className="about-field">
-                  <span className="about-key">email</span>
-                  <span className="about-sep">:</span>
-                  <span className="about-value">{contact.email}</span>
-                </div>
-                <div className="about-field">
-                  <span className="about-key">github</span>
-                  <span className="about-sep">:</span>
-                  <a className="about-value about-value--link" href={contact.githubUrl} target="_blank" rel="noopener noreferrer">{contact.github}</a>
-                </div>
-                <div className="about-field">
-                  <span className="about-key">linkedin</span>
-                  <span className="about-sep">:</span>
-                  <a className="about-value about-value--link" href={contact.linkedinUrl} target="_blank" rel="noopener noreferrer">{contact.linkedin}</a>
-                </div>
+                <span className="about-comment">## intro</span>
+                <p className="about-intro-text"></p>
               </div>
             </div>
 
@@ -126,6 +112,28 @@ export default function AboutPage() {
                 <span className="about-value">
                   {stack.certificates.map((c) => <span className="about-tag about-tag--cert" key={c}>{c}</span>)}
                 </span>
+              </div>
+            </div>
+
+            {/* contact, bottom right */}
+            <div className="about-bottom-row">
+              <div className="about-section">
+                <span className="about-comment">## contact</span>
+                <div className="about-field">
+                  <span className="about-key">email</span>
+                  <span className="about-sep">:</span>
+                  <span className="about-value">{contact.email}</span>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">github</span>
+                  <span className="about-sep">:</span>
+                  <a className="about-value about-value--link" href={contact.githubUrl} target="_blank" rel="noopener noreferrer">{contact.github}</a>
+                </div>
+                <div className="about-field">
+                  <span className="about-key">linkedin</span>
+                  <span className="about-sep">:</span>
+                  <a className="about-value about-value--link" href={contact.linkedinUrl} target="_blank" rel="noopener noreferrer">{contact.linkedin}</a>
+                </div>
               </div>
             </div>
           </div>

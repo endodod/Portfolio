@@ -25,10 +25,10 @@ export const profile = {
   },
 
   stack: {
-    languages:    ["TypeScript", "Python", "Java"],
-    frameworks:   ["Next.js", "Tailwind CSS"],
-    databases:    ["MySQL"],
-    tools:        ["Git / GitHub", "Docker"],
+    languages:    ["TypeScript", "JavaScript", "Python", "Java"],
+    frameworks:   ["Next.js", "React", "Tailwind CSS", "Flask"],
+    databases:    ["MySQL", "PostgreSQL", "MongoDB"],
+    tools:        ["Git / GitHub", "Docker", "Prisma", "Vercel", "Neon"],
     certificates: [
       "Abacus «Anwender» 2024",
     ],

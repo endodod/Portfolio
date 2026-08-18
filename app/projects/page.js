@@ -8,15 +8,19 @@ const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
 ];
 
+const FEATURED_PROJECTS = ["Portfolio", "PortfolioAnalyzer", "Floored", "BlackJack"];
+
 export default function ProjectsPage() {
   const [activeProject, setActiveProject] = useState(null);
 
   const labelOrder = { "live": 0, "self host": 1, "coming soon": 2 };
-  const sortedProjects = [...projects].sort((a, b) => {
-    const aOrder = labelOrder[a.label] ?? 999;
-    const bOrder = labelOrder[b.label] ?? 999;
-    return aOrder - bOrder;
-  });
+  const sortedProjects = projects
+    .filter((p) => FEATURED_PROJECTS.includes(p.name))
+    .sort((a, b) => {
+      const aOrder = labelOrder[a.label] ?? 999;
+      const bOrder = labelOrder[b.label] ?? 999;
+      return aOrder - bOrder;
+    });
 
   useEffect(() => {
     if (window.innerWidth < 768) window.scrollTo(0, 0);
@@ -33,6 +37,13 @@ export default function ProjectsPage() {
     <>
       <main className="home home--fixed console">
         <div className="home-shell home-shell--stack">
+
+          <p className="proj-github-note proj-github-note--top">
+            All of my projects are available on my{" "}
+            <a href="https://github.com/endodod" target="_blank" rel="noopener noreferrer">
+              GitHub page
+            </a>.
+          </p>
 
           <section className="desktop-window desktop-window--proj-pkg" aria-hidden="true">
             <div className="desktop-header">
@@ -80,10 +91,25 @@ export default function ProjectsPage() {
                         {p.label && <span className={`proj-label proj-label--${p.label.replace(/\s+/g, '-')}`}>{p.label}</span>}
                       </div>
                       <p className="proj-entry-desc">{p.description}</p>
+                      {p.highlights && (
+                        <ul className="proj-entry-highlights">
+                          {p.highlights.map((h) => (
+                            <li key={h}>{h}</li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </button>
                 ))}
               </div>
+              <a
+                href="https://github.com/endodod"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="proj-github-note--inline"
+              >
+                View all my projects on GitHub
+              </a>
             </div>
           </section>
 
