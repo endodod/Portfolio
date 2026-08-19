@@ -8,29 +8,39 @@ const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
 ];
 
-const FEATURED_PROJECTS = ["Portfolio", "PortfolioAnalyzer", "Floored", "BlackJack"];
+const PROJECT_SECTIONS = [
+  { category: "personal", title: "Personal Projects" },
+  { category: "hackathon", title: "Hackathon Projects" },
+  { category: "school", title: "School Projects" },
+];
 
 export default function ProjectsPage() {
   const [activeProject, setActiveProject] = useState(null);
 
   const labelOrder = { "live": 0, "self host": 1, "coming soon": 2 };
-  const sortedProjects = projects
-    .filter((p) => FEATURED_PROJECTS.includes(p.name))
-    .sort((a, b) => {
+  const sortByLabel = (list) =>
+    [...list].sort((a, b) => {
       const aOrder = labelOrder[a.label] ?? 999;
       const bOrder = labelOrder[b.label] ?? 999;
       return aOrder - bOrder;
     });
+
+  const sections = PROJECT_SECTIONS.map((section) => ({
+    ...section,
+    projects: sortByLabel(projects.filter((p) => p.category === section.category)),
+  })).filter((section) => section.projects.length > 0);
 
   useEffect(() => {
     if (window.innerWidth < 768) window.scrollTo(0, 0);
   }, []);
 
   const PROJECT_FILES = Object.fromEntries(
-    sortedProjects.map((p) => {
-      const filename = p.dir.replace(/\/$/, "") + ".txt";
-      return [filename, { text: `opening ${p.dir}...`, redirect: () => setActiveProject(p) }];
-    })
+    sections.flatMap((section) =>
+      section.projects.map((p) => {
+        const filename = p.dir.replace(/\/$/, "") + ".txt";
+        return [filename, { text: `opening ${p.dir}...`, redirect: () => setActiveProject(p) }];
+      })
+    )
   );
 
   return (
@@ -72,36 +82,34 @@ export default function ProjectsPage() {
             </div>
 
             <div className="projects-body">
-              <div className="proj-grid">
-                {sortedProjects.map((p) => (
-                  <button
-                    key={p.name}
-                    className="proj-entry"
-                    onClick={() => setActiveProject(p)}
-                    aria-label={`Open ${p.dir} details`}
-                  >
-                    <div className="proj-entry-mobile">
-                      <span className="proj-icon" aria-hidden="true">{p.icon}</span>
-                      <span className="proj-name">{p.name}</span>
-                    </div>
-                    <div className="proj-entry-desktop">
-                      <div className="proj-entry-header">
-                        <span className="proj-dir">drwxr-xr-x</span>
-                        <span className="proj-name about-value--accent">{p.dir}</span>
-                        {p.label && <span className={`proj-label proj-label--${p.label.replace(/\s+/g, '-')}`}>{p.label}</span>}
-                      </div>
-                      <p className="proj-entry-desc">{p.description}</p>
-                      {p.highlights && (
-                        <ul className="proj-entry-highlights">
-                          {p.highlights.map((h) => (
-                            <li key={h}>{h}</li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </button>
-                ))}
-              </div>
+              {sections.map((section) => (
+                <div className="proj-section" key={section.category}>
+                  <span className="proj-section-title">## {section.title.toLowerCase()}</span>
+                  <div className="proj-grid">
+                    {section.projects.map((p) => (
+                      <button
+                        key={p.name}
+                        className="proj-entry"
+                        onClick={() => setActiveProject(p)}
+                        aria-label={`Open ${p.dir} details`}
+                      >
+                        <div className="proj-entry-mobile">
+                          <span className="proj-icon" aria-hidden="true">{p.icon}</span>
+                          <span className="proj-name">{p.name}</span>
+                        </div>
+                        <div className="proj-entry-desktop">
+                          <div className="proj-entry-header">
+                            <span className="proj-dir">drwxr-xr-x</span>
+                            <span className="proj-name about-value--accent">{p.dir}</span>
+                            {p.label && <span className={`proj-label proj-label--${p.label.replace(/\s+/g, '-')}`}>{p.label}</span>}
+                          </div>
+                          <p className="proj-entry-desc">{p.description}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
               <a
                 href="https://github.com/endodod"
                 target="_blank"
