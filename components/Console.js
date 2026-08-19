@@ -5,9 +5,9 @@ import { profile } from "@/content/profile";
 
 const { whoami } = profile;
 const PROMPT = "paul @ portfolio ~ $ ";
-const KNOWN_BINS = ["help", "ls", "cd", "cat", "whoami", "clear", "pwd", "echo"];
+const KNOWN_BINS = ["help", "ls", "cd", "cat", "nano", "whoami", "clear", "pwd", "echo"];
 
-export default function Console({ quickCommands = [], autoRun = true, files = {}, dirs = null, noLs = false, readOnly = false }) {
+export default function Console({ quickCommands = [], autoRun = true, files = {}, dirs = {}, readOnly = false }) {
   const router = useRouter();
   const [consoleText, setConsoleText] = useState("");
   const [queue, setQueue] = useState([]);
@@ -81,27 +81,19 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
 
 
     if (cmd === "help") {
+      const hasFiles = Object.keys(files).length > 0;
       response =
         "help     - show available commands\n" +
         "ls       - list files in current directory\n" +
-        "cd       - change directory (e.g. cd my-projects/)\n" +
-        "cat      - display file (e.g. cat about-me.txt)\n" +
+        "cd       - change directory\n" +
+        (hasFiles ? "cat      - display file contents\n" : "") +
+        "nano     - open a file\n" +
         "whoami   - show current user info\n" +
         "clear    - clear the console";
     } else if (cmd === "ls" || cmd === "ls .") {
-      if (noLs) {
-        response = "ls: .: Not a directory";
-      } else {
-        const fileKeys = Object.keys(files);
-        const dirKeys = dirs !== null ? Object.keys(dirs).map((d) => d + "/") : [];
-        if (fileKeys.length > 0 || dirKeys.length > 0) {
-          response = [...fileKeys, ...dirKeys].join("  ");
-        } else if (dirs === null) {
-          response = "about-me.txt  my-projects/";
-        } else {
-          response = "";
-        }
-      }
+      const fileKeys = Object.keys(files);
+      const dirKeys = Object.keys(dirs).map((d) => d + "/");
+      response = [...fileKeys, ...dirKeys].join("  ");
     } else if (bin === "ls") {
       if (arg.startsWith("-")) {
         response = `ls: unknown argument '${arg}'\nTry 'help' for available commands.`;
@@ -114,19 +106,10 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
       } else if (!arg || arg === "~") {
         response = "navigating home...";
         redirect = "/";
-      } else if (dirs !== null) {
-        if (dirs[arg] !== undefined) {
-          response = `navigating to ${arg}...`;
-          redirect = dirs[arg];
-        } else if (files[arg] !== undefined || arg.includes(".")) {
-          response = `cd: ${arg}: Not a directory`;
-        } else {
-          response = `cd: ${arg}: No such directory`;
-        }
-      } else if (arg === "my-projects") {
-        response = "navigating to my projects...";
-        redirect = "/projects";
-      } else if (arg.includes(".")) {
+      } else if (dirs[arg] !== undefined) {
+        response = `navigating to ${arg}...`;
+        redirect = dirs[arg];
+      } else if (files[arg] !== undefined || arg.includes(".")) {
         response = `cd: ${arg}: Not a directory`;
       } else {
         response = `cd: ${arg}: No such directory`;
@@ -138,17 +121,29 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
         response = `cat: unknown argument '${arg}'\nTry 'help' for available commands.`;
       } else if (files[arg] !== undefined) {
         const entry = files[arg];
-        if (typeof entry === "object" && entry.redirect) {
-          response = entry.text || `opening ${arg}...`;
-          redirect = entry.redirect;
-        } else {
-          response = entry;
-        }
-      } else if (dirs === null && arg === "about-me.txt") {
-        response = "opening about-me.txt...";
-        redirect = "/about";
+        response = typeof entry === "object" ? entry.content : entry;
+      } else if (dirs[arg] !== undefined) {
+        response = `cat: ${arg}: Is a directory`;
       } else {
         response = `cat: ${arg}: No such file or directory`;
+      }
+    } else if (bin === "nano") {
+      if (!arg) {
+        response = "nano: missing operand\nUsage: nano <file>";
+      } else if (arg.startsWith("-")) {
+        response = `nano: unknown argument '${arg}'\nTry 'help' for available commands.`;
+      } else if (files[arg] !== undefined) {
+        const entry = files[arg];
+        if (typeof entry === "object" && entry.open) {
+          response = `opening ${arg}...`;
+          redirect = entry.open;
+        } else {
+          response = typeof entry === "object" ? entry.content : entry;
+        }
+      } else if (dirs[arg] !== undefined) {
+        response = `nano: ${arg}: Is a directory`;
+      } else {
+        response = `nano: ${arg}: No such file or directory`;
       }
     } else if (cmd === "whoami") {
       response = whoami.map((l) => `  ${l}`).join("\n");
@@ -195,16 +190,11 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
 
   const getTabCandidates = (bin, partial) => {
     if (!bin) return KNOWN_BINS.filter((b) => b.startsWith(partial));
-    if (bin === "cat") {
-      const fileNames = Object.keys(files);
-      if (dirs === null) fileNames.push("about-me.txt");
-      return fileNames.filter((f) => f.startsWith(partial));
+    if (bin === "cat" || bin === "nano") {
+      return Object.keys(files).filter((f) => f.startsWith(partial));
     }
     if (bin === "cd") {
-      const dirNames = dirs !== null
-        ? Object.keys(dirs).map((d) => d + "/")
-        : ["my-projects/"];
-      return dirNames.filter((d) => d.startsWith(partial));
+      return Object.keys(dirs).map((d) => d + "/").filter((d) => d.startsWith(partial));
     }
     return [];
   };
@@ -363,9 +353,16 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
       <div className="console-body">
         <div ref={outputWrapperRef} className="console-output-wrapper">
           <pre className="console-output">
-            {consoleText}
+            {consoleText.split("\n").map((line, i, arr) => (
+              <span key={i}>
+                {line.startsWith(PROMPT) ? (
+                  <><span className="console-prompt">{PROMPT}</span>{line.slice(PROMPT.length)}</>
+                ) : line}
+                {i < arr.length - 1 && "\n"}
+              </span>
+            ))}
             {!readOnly && !isMobile && (!isTyping && queue.length === 0 ? (
-              <>{PROMPT}<span ref={commandTextRef}>{command.slice(0, cursorPos)}<span className="console-cursor" aria-hidden="true">{command[cursorPos] ?? ' '}</span>{command.slice(cursorPos + 1)}</span></>
+              <><span className="console-prompt">{PROMPT}</span><span ref={commandTextRef}>{command.slice(0, cursorPos)}<span className="console-cursor" aria-hidden="true">{command[cursorPos] ?? ' '}</span>{command.slice(cursorPos + 1)}</span></>
             ) : (
               <span className="console-cursor" aria-hidden="true"> </span>
             ))}

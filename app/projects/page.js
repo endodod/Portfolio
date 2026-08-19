@@ -38,7 +38,13 @@ export default function ProjectsPage() {
     sections.flatMap((section) =>
       section.projects.map((p) => {
         const filename = p.dir.replace(/\/$/, "") + ".txt";
-        return [filename, { text: `opening ${p.dir}...`, redirect: () => setActiveProject(p) }];
+        const content = [
+          p.name,
+          p.label ? `status: ${p.label}` : null,
+          "",
+          p.description,
+        ].filter((line) => line !== null).join("\n");
+        return [filename, { content, open: () => setActiveProject(p) }];
       })
     )
   );
