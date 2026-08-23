@@ -72,8 +72,8 @@ export const projects = [
     description: "Online multiplayer party racing game where players build the track together, then race what they built",
     stack: ["Phaser 3", "React", "TypeScript", "Colyseus", "Zustand", "Vite", "Express"],
     category: "hackathon",
-    github: "github.com/im24a-mendolag/hackathon-2026",
-    githubUrl: "https://github.com/im24a-mendolag/hackathon-2026",
+    github: "github.com/im24a-mendolag/trackworks",
+    githubUrl: "https://github.com/im24a-mendolag/trackworks",
     label: "prototype",
   },
   {
