@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { getLastGood, setLastGood } from "@/lib/lastGoodCache";
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
 const STATSFM_USER_ID = process.env.STATSFM_USER_ID;
+const CACHE_KEY = "spotify-top";
 
 async function getAccessToken() {
   const basic = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
@@ -35,7 +37,7 @@ export async function GET() {
 
     const artistsRes = await fetch(
       "https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=5",
-      { headers, next: { revalidate: 86400 } }
+      { headers, next: { revalidate: 3600 } }
     );
     if (!artistsRes.ok) throw new Error(`top-artists ${artistsRes.status}`);
 
@@ -44,7 +46,7 @@ export async function GET() {
     const trackCounts = new Map();
     const tracksRes = await fetch(
       "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50",
-      { headers, next: { revalidate: 86400 } }
+      { headers, next: { revalidate: 3600 } }
     );
     if (tracksRes.ok) {
       const tracksData = await tracksRes.json();
@@ -62,14 +64,14 @@ export async function GET() {
       tracks: trackCounts.get(artist.id) || 0,
     }));
 
-    if (!artists.length) return NextResponse.json({ error: true });
+    if (!artists.length) throw new Error("no top artists");
 
     if (STATSFM_USER_ID) {
       try {
         const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
         const statsfmRes = await fetch(
           `https://api.stats.fm/api/v1/users/${encodeURIComponent(STATSFM_USER_ID)}/top/artists?after=${thirtyDaysAgoMs}`,
-          { next: { revalidate: 86400 } }
+          { next: { revalidate: 3600 } }
         );
         if (statsfmRes.ok) {
           const statsfmData = await statsfmRes.json();
@@ -96,15 +98,17 @@ export async function GET() {
     let account = null;
     const meRes = await fetch("https://api.spotify.com/v1/me", {
       headers,
-      next: { revalidate: 86400 },
+      next: { revalidate: 3600 },
     });
     if (meRes.ok) {
       const me = await meRes.json();
       account = { name: me.display_name || me.id, url: me.external_urls?.spotify || null };
     }
 
-    return NextResponse.json({ artists: artistsOut, account });
+    const result = { artists: artistsOut, account };
+    setLastGood(CACHE_KEY, result);
+    return NextResponse.json(result);
   } catch {
-    return NextResponse.json({ error: true });
+    return NextResponse.json(getLastGood(CACHE_KEY) || { error: true });
   }
 }

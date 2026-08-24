@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Console from "@/components/Console";
 import ProjectModal from "@/components/ProjectModal";
 import { projects } from "@/content/projects";
+import { alignList } from "@/lib/alignList";
 
 const QUICK_COMMANDS = [
   { label: "Home", command: "cd ~" },
@@ -21,7 +22,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     fetch("/api/github-top-projects")
       .then((r) => r.json())
-      .then((d) => setTopProjects(d.error ? ["(unavailable)"] : d.projects.map((p) => `${p.name}  ${p.commits}c`)))
+      .then((d) => setTopProjects(d.error ? ["(unavailable)"] : alignList(d.projects, (p) => `${p.commits} commits`)))
       .catch(() => setTopProjects(["(unavailable)"]));
   }, []);
 

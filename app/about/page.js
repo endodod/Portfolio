@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Console from "@/components/Console";
 import { profile } from "@/content/profile";
+import { alignList } from "@/lib/alignList";
 
 const { name, role, location, school, contact, stack } = profile;
 
@@ -16,12 +17,6 @@ const TAG_COLORS = [
 // Each stack row gets one consistent color, distinct from the row above/below it.
 function tagClass(rowIndex) {
   return `about-tag ${TAG_COLORS[rowIndex % TAG_COLORS.length]}`;
-}
-
-// Pads names to the longest one in the list so the trailing values line up in a column.
-function alignList(items, valueFn) {
-  const maxLen = Math.max(...items.map((item) => item.name.length));
-  return items.map((item) => `${item.name.padEnd(maxLen)}  ${valueFn(item)}`);
 }
 
 export default function AboutPage() {

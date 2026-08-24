@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { getLastGood, setLastGood } from "@/lib/lastGoodCache";
 
 const API_KEY = process.env.RIOT_API_KEY;
 const GAME_NAME = process.env.RIOT_GAME_NAME;
 const TAG_LINE = process.env.RIOT_TAG_LINE;
 const REGION = process.env.RIOT_REGION || "europe";
+const CACHE_KEY = "riot-recent";
 
 const OPGG_REGION_BY_CONTINENT = { europe: "euw", americas: "na", asia: "kr", sea: "sg" };
 const OPGG_REGION = process.env.RIOT_OPGG_REGION || OPGG_REGION_BY_CONTINENT[REGION] || "euw";
@@ -18,7 +20,7 @@ export async function GET() {
 
     const accountRes = await fetch(
       `https://${REGION}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(GAME_NAME)}/${encodeURIComponent(TAG_LINE)}`,
-      { headers, next: { revalidate: 86400 } }
+      { headers, next: { revalidate: 3600 } }
     );
     if (!accountRes.ok) throw new Error(`account ${accountRes.status}`);
     const { puuid, gameName, tagLine } = await accountRes.json();
@@ -27,7 +29,7 @@ export async function GET() {
 
     const idsRes = await fetch(
       `https://${REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?startTime=${thirtyDaysAgo}&start=0&count=50`,
-      { headers, next: { revalidate: 86400 } }
+      { headers, next: { revalidate: 3600 } }
     );
     if (!idsRes.ok) throw new Error(`match-ids ${idsRes.status}`);
     const matchIds = await idsRes.json();
@@ -36,7 +38,7 @@ export async function GET() {
       matchIds.map((id) =>
         fetch(`https://${REGION}.api.riotgames.com/lol/match/v5/matches/${id}`, {
           headers,
-          next: { revalidate: 86400 },
+          next: { revalidate: 3600 },
         })
           .then((r) => (r.ok ? r.json() : null))
           .catch(() => null)
@@ -55,15 +57,17 @@ export async function GET() {
       .slice(0, 5)
       .map(([name, games]) => ({ name, games }));
 
-    if (!champions.length) return NextResponse.json({ error: true });
+    if (!champions.length) throw new Error("no recent champions");
 
     const account = {
       name: `${gameName}#${tagLine}`,
       url: `https://www.op.gg/summoners/${OPGG_REGION}/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`,
     };
 
-    return NextResponse.json({ champions, account });
+    const result = { champions, account };
+    setLastGood(CACHE_KEY, result);
+    return NextResponse.json(result);
   } catch {
-    return NextResponse.json({ error: true });
+    return NextResponse.json(getLastGood(CACHE_KEY) || { error: true });
   }
 }
