@@ -21,6 +21,7 @@ function tagClass(rowIndex) {
 export default function AboutPage() {
   const [topArtists, setTopArtists] = useState(["loading..."]);
   const [recentGames, setRecentGames] = useState(["loading..."]);
+  const [recentChamps, setRecentChamps] = useState(["loading..."]);
 
   useEffect(() => {
     fetch("/api/spotify-top")
@@ -32,6 +33,11 @@ export default function AboutPage() {
       .then((r) => r.json())
       .then((d) => setRecentGames(d.error ? ["(unavailable)"] : d.games.map((g) => `${g.name}  ${g.hours}h`)))
       .catch(() => setRecentGames(["(unavailable)"]));
+
+    fetch("/api/riot-recent")
+      .then((r) => r.json())
+      .then((d) => setRecentChamps(d.error ? ["(unavailable)"] : d.champions))
+      .catch(() => setRecentChamps(["(unavailable)"]));
   }, []);
 
   return (
@@ -75,9 +81,24 @@ export default function AboutPage() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">## recently played</span>
+              <span className="desktop-line text-green">## recently played steam games</span>
               <span className="desktop-line"> </span>
               {recentGames.map((line, i) => (
+                <span key={i} className="desktop-line">{i + 1}. {line}</span>
+              ))}
+            </pre>
+          </div>
+        </section>
+
+        <section className="desktop-window desktop-window--about-riot" aria-hidden="true">
+          <div className="desktop-header">
+            <span className="desktop-title">league-of-legends.txt</span>
+          </div>
+          <div className="desktop-body">
+            <pre>
+              <span className="desktop-line text-green">## recently played lol champs</span>
+              <span className="desktop-line"> </span>
+              {recentChamps.map((line, i) => (
                 <span key={i} className="desktop-line">{i + 1}. {line}</span>
               ))}
             </pre>

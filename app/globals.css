@@ -459,15 +459,16 @@ a {
 
 .desktop-window--about-lang {
   top: 3%;
-  left: -180px;
-  transform: rotate(-2deg);
+  right: -220px;
+  width: 210px;
+  transform: rotate(2deg);
   opacity: 0.88;
 }
 
 .desktop-window--about-spotify {
-  top: 62%;
+  top: 3%;
   left: -190px;
-  transform: translateY(-50%) rotate(-2deg);
+  transform: rotate(-2deg);
   opacity: 0.88;
 }
 
@@ -475,6 +476,13 @@ a {
   bottom: 12%;
   right: -210px;
   transform: rotate(3deg);
+  opacity: 0.85;
+}
+
+.desktop-window--about-riot {
+  bottom: 12%;
+  left: -170px;
+  transform: rotate(-2deg);
   opacity: 0.85;
 }
 
@@ -967,6 +975,7 @@ a {
   .desktop-window--about-lang,
   .desktop-window--about-spotify,
   .desktop-window--about-steam,
+  .desktop-window--about-riot,
   .desktop-window--proj-pkg,
   .desktop-window--proj-commits {
     display: none;
