@@ -16,6 +16,14 @@ const PROJECT_SECTIONS = [
 
 export default function ProjectsPage() {
   const [activeProject, setActiveProject] = useState(null);
+  const [topProjects, setTopProjects] = useState(["loading..."]);
+
+  useEffect(() => {
+    fetch("/api/github-top-projects")
+      .then((r) => r.json())
+      .then((d) => setTopProjects(d.error ? ["(unavailable)"] : d.projects.map((p) => `${p.name}  ${p.commits}c`)))
+      .catch(() => setTopProjects(["(unavailable)"]));
+  }, []);
 
   const labelOrder = { "live": 0, "self host": 1, "coming soon": 2 };
   const sortByLabel = (list) =>
@@ -75,6 +83,21 @@ export default function ProjectsPage() {
                 <span className="desktop-line">yfinance==0.2.65</span>
                 <span className="desktop-line">python-dotenv==1.1.1</span>
                 <span className="desktop-line">gunicorn==21.2.0</span>
+              </pre>
+            </div>
+          </section>
+
+          <section className="desktop-window desktop-window--proj-commits" aria-hidden="true">
+            <div className="desktop-header">
+              <span className="desktop-title">shortlog.txt</span>
+            </div>
+            <div className="desktop-body">
+              <pre>
+                <span className="desktop-line text-green">## top projects by commits</span>
+                <span className="desktop-line"> </span>
+                {topProjects.map((line, i) => (
+                  <span key={i} className="desktop-line">{i + 1}. {line}</span>
+                ))}
               </pre>
             </div>
           </section>

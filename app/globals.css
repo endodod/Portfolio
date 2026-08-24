@@ -125,7 +125,7 @@ a {
 }
 
 .desktop-window--help-console {
-  top: 60%;
+  top: 66%;
   left: -140px;
   width: 340px;
   transform: rotate(-1.5deg);
@@ -167,8 +167,15 @@ a {
 
 .desktop-window--git {
   bottom: 6%;
-  right: -30px;
+  right: -60px;
+  width: 420px;
   transform: rotate(3deg);
+}
+
+.desktop-window--git .desktop-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .desktop-window--status {
@@ -465,8 +472,8 @@ a {
 }
 
 .desktop-window--about-steam {
-  bottom: 18%;
-  right: -190px;
+  bottom: 12%;
+  right: -210px;
   transform: rotate(3deg);
   opacity: 0.85;
 }
@@ -628,6 +635,13 @@ a {
   bottom: 6%;
   left: -160px;
   transform: rotate(-2.5deg);
+  opacity: 0.85;
+}
+
+.desktop-window--proj-commits {
+  bottom: 6%;
+  right: -200px;
+  transform: rotate(2.5deg);
   opacity: 0.85;
 }
 
@@ -953,7 +967,8 @@ a {
   .desktop-window--about-lang,
   .desktop-window--about-spotify,
   .desktop-window--about-steam,
-  .desktop-window--proj-pkg {
+  .desktop-window--proj-pkg,
+  .desktop-window--proj-commits {
     display: none;
   }
 

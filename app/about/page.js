@@ -49,7 +49,7 @@ export default function AboutPage() {
               <span className="desktop-line"> </span>
               <span className="desktop-line">german   {"██████████"}  C2</span>
               <span className="desktop-line">english  {"████████░░"}  C1</span>
-              <span className="desktop-line">french   {"█████░░░░░"}  B1</span>
+              <span className="desktop-line">french   {"███████░░░"}  B2</span>
             </pre>
           </div>
         </section>

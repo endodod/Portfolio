@@ -35,7 +35,7 @@ export async function GET() {
 
     const commits = data.map((c) => {
       const hash = c.sha?.slice(0, 7) || "0000000";
-      const msg = c.commit?.message?.split("\n")[0]?.slice(0, 38) || "commit";
+      const msg = c.commit?.message?.split("\n")[0] || "commit";
       return `${hash} ${msg}`;
     });
 
