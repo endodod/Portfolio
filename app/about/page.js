@@ -20,12 +20,18 @@ function tagClass(rowIndex) {
 
 export default function AboutPage() {
   const [topArtists, setTopArtists] = useState(["loading..."]);
+  const [recentGames, setRecentGames] = useState(["loading..."]);
 
   useEffect(() => {
     fetch("/api/spotify-top")
       .then((r) => r.json())
       .then((d) => setTopArtists(d.error ? ["(unavailable)"] : d.artists.map((a) => a.name)))
       .catch(() => setTopArtists(["(unavailable)"]));
+
+    fetch("/api/steam-recent")
+      .then((r) => r.json())
+      .then((d) => setRecentGames(d.error ? ["(unavailable)"] : d.games.map((g) => `${g.name}  ${g.hours}h`)))
+      .catch(() => setRecentGames(["(unavailable)"]));
   }, []);
 
   return (
@@ -57,6 +63,21 @@ export default function AboutPage() {
               <span className="desktop-line text-green">## top artists this month</span>
               <span className="desktop-line"> </span>
               {topArtists.map((line, i) => (
+                <span key={i} className="desktop-line">{i + 1}. {line}</span>
+              ))}
+            </pre>
+          </div>
+        </section>
+
+        <section className="desktop-window desktop-window--about-steam" aria-hidden="true">
+          <div className="desktop-header">
+            <span className="desktop-title">steam.txt</span>
+          </div>
+          <div className="desktop-body">
+            <pre>
+              <span className="desktop-line text-green">## recently played</span>
+              <span className="desktop-line"> </span>
+              {recentGames.map((line, i) => (
                 <span key={i} className="desktop-line">{i + 1}. {line}</span>
               ))}
             </pre>

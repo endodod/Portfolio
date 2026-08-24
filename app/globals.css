@@ -451,17 +451,24 @@ a {
 /* ── About page ─────────────────────────────── */
 
 .desktop-window--about-lang {
-  bottom: 4%;
-  right: -180px;
-  transform: rotate(2deg);
+  top: 3%;
+  left: -180px;
+  transform: rotate(-2deg);
   opacity: 0.88;
 }
 
 .desktop-window--about-spotify {
-  top: 50%;
+  top: 62%;
   left: -190px;
   transform: translateY(-50%) rotate(-2deg);
   opacity: 0.88;
+}
+
+.desktop-window--about-steam {
+  bottom: 18%;
+  right: -190px;
+  transform: rotate(3deg);
+  opacity: 0.85;
 }
 
 .about-window {
@@ -945,6 +952,7 @@ a {
   .desktop-window--status,
   .desktop-window--about-lang,
   .desktop-window--about-spotify,
+  .desktop-window--about-steam,
   .desktop-window--proj-pkg {
     display: none;
   }
