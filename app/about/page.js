@@ -18,25 +18,43 @@ function tagClass(rowIndex) {
   return `about-tag ${TAG_COLORS[rowIndex % TAG_COLORS.length]}`;
 }
 
+// Pads names to the longest one in the list so the trailing values line up in a column.
+function alignList(items, valueFn) {
+  const maxLen = Math.max(...items.map((item) => item.name.length));
+  return items.map((item) => `${item.name.padEnd(maxLen)}  ${valueFn(item)}`);
+}
+
 export default function AboutPage() {
   const [topArtists, setTopArtists] = useState(["loading..."]);
   const [recentGames, setRecentGames] = useState(["loading..."]);
   const [recentChamps, setRecentChamps] = useState(["loading..."]);
+  const [spotifyAccount, setSpotifyAccount] = useState(null);
+  const [steamAccount, setSteamAccount] = useState(null);
+  const [riotAccount, setRiotAccount] = useState(null);
 
   useEffect(() => {
     fetch("/api/spotify-top")
       .then((r) => r.json())
-      .then((d) => setTopArtists(d.error ? ["(unavailable)"] : d.artists.map((a) => a.name)))
+      .then((d) => {
+        setTopArtists(d.error ? ["(unavailable)"] : alignList(d.artists, (a) => (a.hours != null ? `${a.hours}h` : `${a.tracks} tracks`)));
+        setSpotifyAccount(d.account || null);
+      })
       .catch(() => setTopArtists(["(unavailable)"]));
 
     fetch("/api/steam-recent")
       .then((r) => r.json())
-      .then((d) => setRecentGames(d.error ? ["(unavailable)"] : d.games.map((g) => `${g.name}  ${g.hours}h`)))
+      .then((d) => {
+        setRecentGames(d.error ? ["(unavailable)"] : alignList(d.games, (g) => `${g.hours}h`));
+        setSteamAccount(d.account || null);
+      })
       .catch(() => setRecentGames(["(unavailable)"]));
 
     fetch("/api/riot-recent")
       .then((r) => r.json())
-      .then((d) => setRecentChamps(d.error ? ["(unavailable)"] : d.champions))
+      .then((d) => {
+        setRecentChamps(d.error ? ["(unavailable)"] : alignList(d.champions, (c) => `${c.games} games`));
+        setRiotAccount(d.account || null);
+      })
       .catch(() => setRecentChamps(["(unavailable)"]));
   }, []);
 
@@ -60,13 +78,18 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="desktop-window desktop-window--about-spotify" aria-hidden="true">
+        <section className="desktop-window desktop-window--about-spotify">
           <div className="desktop-header">
             <span className="desktop-title">spotify.txt</span>
           </div>
           <div className="desktop-body">
             <pre>
               <span className="desktop-line text-green">## top artists this month</span>
+              {spotifyAccount && (
+                <span className="desktop-line">
+                  account: <a className="desktop-link" href={spotifyAccount.url} target="_blank" rel="noopener noreferrer">{spotifyAccount.name}</a>
+                </span>
+              )}
               <span className="desktop-line"> </span>
               {topArtists.map((line, i) => (
                 <span key={i} className="desktop-line">{i + 1}. {line}</span>
@@ -75,13 +98,18 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="desktop-window desktop-window--about-steam" aria-hidden="true">
+        <section className="desktop-window desktop-window--about-steam">
           <div className="desktop-header">
             <span className="desktop-title">steam.txt</span>
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">## recently played steam games</span>
+              <span className="desktop-line text-green">## top games played this month</span>
+              {steamAccount && (
+                <span className="desktop-line">
+                  account: <a className="desktop-link" href={steamAccount.url} target="_blank" rel="noopener noreferrer">{steamAccount.name}</a>
+                </span>
+              )}
               <span className="desktop-line"> </span>
               {recentGames.map((line, i) => (
                 <span key={i} className="desktop-line">{i + 1}. {line}</span>
@@ -90,13 +118,18 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="desktop-window desktop-window--about-riot" aria-hidden="true">
+        <section className="desktop-window desktop-window--about-riot">
           <div className="desktop-header">
             <span className="desktop-title">league-of-legends.txt</span>
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">## recently played lol champs</span>
+              <span className="desktop-line text-green">## top champs played this month</span>
+              {riotAccount && (
+                <span className="desktop-line">
+                  account: <a className="desktop-link" href={riotAccount.url} target="_blank" rel="noopener noreferrer">{riotAccount.name}</a>
+                </span>
+              )}
               <span className="desktop-line"> </span>
               {recentChamps.map((line, i) => (
                 <span key={i} className="desktop-line">{i + 1}. {line}</span>

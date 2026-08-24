@@ -96,7 +96,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="desktop-window desktop-window--notes" aria-hidden="true">
+        <section className="desktop-window desktop-window--notes">
           <div className="desktop-header">
             <span className="desktop-title">contact.txt</span>
           </div>
@@ -105,9 +105,9 @@ export default function Home() {
               <span className="desktop-line">{name}</span>
               <span className="desktop-line">{location}</span>
               <span className="desktop-line"> </span>
-              <span className="desktop-line">mail: {contact.email}</span>
-              <span className="desktop-line">github: {contact.github}</span>
-              <span className="desktop-line">linkedin: {contact.linkedin}</span>
+              <span className="desktop-line">mail: <a className="desktop-link" href={`mailto:${contact.email}`}>{contact.email}</a></span>
+              <span className="desktop-line">github: <a className="desktop-link" href={contact.githubUrl} target="_blank" rel="noopener noreferrer">{contact.github}</a></span>
+              <span className="desktop-line">linkedin: <a className="desktop-link" href={contact.linkedinUrl} target="_blank" rel="noopener noreferrer">{contact.linkedin}</a></span>
             </pre>
           </div>
         </section>

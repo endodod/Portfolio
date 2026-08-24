@@ -16,22 +16,33 @@ export async function GET() {
     url.searchParams.set("include_played_free_games", "1");
     url.searchParams.set("format", "json");
 
-    const res = await fetch(url, { next: { revalidate: 3600 } });
+    const res = await fetch(url, { next: { revalidate: 86400 } });
     if (!res.ok) throw new Error(`owned-games ${res.status}`);
 
     const data = await res.json();
     const games = (data.response?.games || [])
-      .filter((g) => g.rtime_last_played)
-      .sort((a, b) => b.rtime_last_played - a.rtime_last_played)
+      .filter((g) => g.playtime_2weeks > 0)
+      .sort((a, b) => b.playtime_2weeks - a.playtime_2weeks)
       .slice(0, 5)
       .map((g) => ({
         name: g.name,
-        hours: Math.round(g.playtime_forever / 60),
+        hours: Math.round(g.playtime_2weeks / 60),
       }));
 
     if (!games.length) return NextResponse.json({ error: true });
 
-    return NextResponse.json({ games });
+    let account = null;
+    const summaryUrl = new URL("https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/");
+    summaryUrl.searchParams.set("key", API_KEY);
+    summaryUrl.searchParams.set("steamids", STEAM_ID);
+    const summaryRes = await fetch(summaryUrl, { next: { revalidate: 86400 } });
+    if (summaryRes.ok) {
+      const summaryData = await summaryRes.json();
+      const player = summaryData.response?.players?.[0];
+      if (player) account = { name: player.personaname, url: player.profileurl };
+    }
+
+    return NextResponse.json({ games, account });
   } catch {
     return NextResponse.json({ error: true });
   }

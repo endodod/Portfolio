@@ -3,6 +3,7 @@ import { profile } from "@/content/profile";
 
 const GITHUB_USER = process.env.NEXT_PUBLIC_GITHUB_USER || process.env.GITHUB_USER || profile.contact.github_user;
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_REPO = `${GITHUB_USER}/Portfolio`;
 
 export async function GET() {
   try {
@@ -14,16 +15,7 @@ export async function GET() {
       headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
     }
 
-    // Find the most recently pushed-to repo via events
-    const evRes = await fetch(
-      `https://api.github.com/users/${GITHUB_USER}/events?per_page=10`,
-      { headers, next: { revalidate: 60 } }
-    );
-    if (!evRes.ok) throw new Error(`GitHub API ${evRes.status}`);
-    const events = await evRes.json();
-
-    const pushEvent = events.find((ev) => ev.type === "PushEvent" && ev.repo?.name);
-    const repoName = pushEvent?.repo?.name || `${GITHUB_USER}/Portfolio`;
+    const repoName = GITHUB_REPO;
 
     // Fetch commits from that repo directly
     const commitsRes = await fetch(

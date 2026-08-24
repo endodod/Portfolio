@@ -1,7 +1,7 @@
 // One-off helper: exchange a Spotify authorization code for a refresh token.
 //
-// 1. Fill CLIENT_ID / CLIENT_SECRET in .env, then run this script once to print
-//    the authorize URL:
+// 1. Fill CLIENT_ID / CLIENT_SECRET in .env or .env.local, then run this script
+//    once to print the authorize URL:
 //      node scripts/spotify-get-refresh-token.mjs
 // 2. Open the printed URL, log in, approve access. Spotify redirects you to
 //    http://127.0.0.1:3000/callback?code=... — the page load will fail (nothing
@@ -11,19 +11,20 @@
 
 import { readFileSync } from "node:fs";
 
-function loadEnv() {
+function loadEnvFile(filename) {
   try {
-    const text = readFileSync(new URL("../.env", import.meta.url), "utf8");
-    for (const line of text.split("\n")) {
+    const text = readFileSync(new URL(`../${filename}`, import.meta.url), "utf8");
+    for (const line of text.split(/\r?\n/)) {
       const match = line.match(/^([A-Z_]+)=(.*)$/);
       if (match) process.env[match[1]] ||= match[2].trim();
     }
   } catch {
-    // no .env file — rely on process env
+    // file doesn't exist — skip
   }
 }
 
-loadEnv();
+loadEnvFile(".env");
+loadEnvFile(".env.local");
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
