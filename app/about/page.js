@@ -39,7 +39,7 @@ export default function AboutPage() {
     fetch("/api/steam-recent")
       .then((r) => r.json())
       .then((d) => {
-        setRecentGames(d.error ? ["(unavailable)"] : alignList(d.games, (g) => `${g.hours}h`));
+        setRecentGames(d.error ? ["(unavailable)"] : d.games.map((g) => g.name));
         setSteamAccount(d.account || null);
       })
       .catch(() => setRecentGames(["(unavailable)"]));
@@ -47,7 +47,7 @@ export default function AboutPage() {
     fetch("/api/riot-recent")
       .then((r) => r.json())
       .then((d) => {
-        setRecentChamps(d.error ? ["(unavailable)"] : alignList(d.champions, (c) => `${c.games} games`));
+        setRecentChamps(d.error ? ["(unavailable)"] : alignList(d.champions, (c) => `${Math.round(c.points / 1000)}k pts`));
         setRiotAccount(d.account || null);
       })
       .catch(() => setRecentChamps(["(unavailable)"]));
@@ -99,7 +99,7 @@ export default function AboutPage() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">## top games played this month</span>
+              <span className="desktop-line text-green">## last 5 games played</span>
               {steamAccount && (
                 <span className="desktop-line">
                   account: <a className="desktop-link" href={steamAccount.url} target="_blank" rel="noopener noreferrer">{steamAccount.name}</a>
@@ -119,7 +119,7 @@ export default function AboutPage() {
           </div>
           <div className="desktop-body">
             <pre>
-              <span className="desktop-line text-green">## top champs played this month</span>
+              <span className="desktop-line text-green">## top champion masteries</span>
               {riotAccount && (
                 <span className="desktop-line">
                   account: <a className="desktop-link" href={riotAccount.url} target="_blank" rel="noopener noreferrer">{riotAccount.name}</a>

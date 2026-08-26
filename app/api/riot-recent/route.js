@@ -10,6 +10,19 @@ const CACHE_KEY = "riot-recent";
 const OPGG_REGION_BY_CONTINENT = { europe: "euw", americas: "na", asia: "kr", sea: "sg" };
 const OPGG_REGION = process.env.RIOT_OPGG_REGION || OPGG_REGION_BY_CONTINENT[REGION] || "euw";
 
+const PLATFORM_BY_CONTINENT = { europe: "euw1", americas: "na1", asia: "kr", sea: "sg2" };
+const PLATFORM = process.env.RIOT_PLATFORM || PLATFORM_BY_CONTINENT[REGION] || "euw1";
+
+const CHAMPION_NAMES_URL =
+  "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json";
+
+async function getChampionNameById() {
+  const res = await fetch(CHAMPION_NAMES_URL, { next: { revalidate: 86400 } });
+  if (!res.ok) throw new Error(`champion-summary ${res.status}`);
+  const champions = await res.json();
+  return new Map(champions.map((c) => [c.id, c.name]));
+}
+
 export async function GET() {
   if (!API_KEY || !GAME_NAME || !TAG_LINE) {
     return NextResponse.json({ error: true });
@@ -25,39 +38,21 @@ export async function GET() {
     if (!accountRes.ok) throw new Error(`account ${accountRes.status}`);
     const { puuid, gameName, tagLine } = await accountRes.json();
 
-    const thirtyDaysAgo = Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60;
-
-    const idsRes = await fetch(
-      `https://${REGION}.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?startTime=${thirtyDaysAgo}&start=0&count=50`,
+    const masteryRes = await fetch(
+      `https://${PLATFORM}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`,
       { headers, next: { revalidate: 3600 } }
     );
-    if (!idsRes.ok) throw new Error(`match-ids ${idsRes.status}`);
-    const matchIds = await idsRes.json();
+    if (!masteryRes.ok) throw new Error(`champion-mastery ${masteryRes.status}`);
+    const masteries = await masteryRes.json();
 
-    const matches = await Promise.all(
-      matchIds.map((id) =>
-        fetch(`https://${REGION}.api.riotgames.com/lol/match/v5/matches/${id}`, {
-          headers,
-          next: { revalidate: 3600 },
-        })
-          .then((r) => (r.ok ? r.json() : null))
-          .catch(() => null)
-      )
-    );
+    if (!masteries.length) throw new Error("no champion masteries");
 
-    const champCounts = new Map();
-    for (const match of matches) {
-      const participant = match?.info?.participants?.find((p) => p.puuid === puuid);
-      const champ = participant?.championName;
-      if (champ) champCounts.set(champ, (champCounts.get(champ) || 0) + 1);
-    }
+    const championNameById = await getChampionNameById();
 
-    const champions = [...champCounts.entries()]
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5)
-      .map(([name, games]) => ({ name, games }));
-
-    if (!champions.length) throw new Error("no recent champions");
+    const champions = masteries.map((m) => ({
+      name: championNameById.get(m.championId) || `Champion ${m.championId}`,
+      points: m.championPoints,
+    }));
 
     const account = {
       name: `${gameName}#${tagLine}`,

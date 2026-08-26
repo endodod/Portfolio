@@ -23,13 +23,10 @@ export async function GET() {
 
     const data = await res.json();
     const games = (data.response?.games || [])
-      .filter((g) => g.playtime_2weeks > 0)
-      .sort((a, b) => b.playtime_2weeks - a.playtime_2weeks)
+      .filter((g) => g.rtime_last_played > 0)
+      .sort((a, b) => b.rtime_last_played - a.rtime_last_played)
       .slice(0, 5)
-      .map((g) => ({
-        name: g.name,
-        hours: Math.round(g.playtime_2weeks / 60),
-      }));
+      .map((g) => ({ name: g.name }));
 
     if (!games.length) throw new Error("no recent games");
 

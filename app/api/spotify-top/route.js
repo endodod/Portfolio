@@ -102,7 +102,10 @@ export async function GET() {
     });
     if (meRes.ok) {
       const me = await meRes.json();
-      account = { name: me.display_name || me.id, url: me.external_urls?.spotify || null };
+      const url = STATSFM_USER_ID
+        ? `https://stats.fm/${encodeURIComponent(STATSFM_USER_ID)}`
+        : me.external_urls?.spotify || null;
+      account = { name: me.display_name || me.id, url };
     }
 
     const result = { artists: artistsOut, account };
