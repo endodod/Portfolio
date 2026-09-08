@@ -20,6 +20,7 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
   const [cursorPos, setCursorPos] = useState(0);
   const [allSelected, setAllSelected] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const draftCommand = useRef("");
   const containerRef = useRef(null);
   const outputWrapperRef = useRef(null);
@@ -336,11 +337,13 @@ export default function Console({ quickCommands = [], autoRun = true, files = {}
 
   return (
     <section
-      className="console-window"
+      className={`console-window${isFocused ? " console-window--focused" : ""}`}
       ref={containerRef}
       tabIndex={readOnly || isMobile ? -1 : 0}
       onKeyDown={readOnly ? undefined : handleKeyDown}
       onClick={() => !readOnly && !isMobile && containerRef.current?.focus()}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
       aria-label="Interactive console"
     >
       <div className="console-header">

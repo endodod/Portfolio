@@ -90,7 +90,8 @@ a {
   animation: console-open 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.console-window:focus-visible {
+.console-window:focus-visible,
+.console-window--focused {
   outline: 1px solid rgba(129, 244, 225, 0.35);
 }
 
