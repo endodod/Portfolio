@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Console from "@/components/Console";
 import { profile } from "@/content/profile";
+import { alignList } from "@/lib/alignList";
 
 const { name, role, location, school, contact, stack } = profile;
 
@@ -20,12 +21,36 @@ function tagClass(rowIndex) {
 
 export default function AboutPage() {
   const [topArtists, setTopArtists] = useState(["loading..."]);
+  const [recentGames, setRecentGames] = useState(["loading..."]);
+  const [recentChamps, setRecentChamps] = useState(["loading..."]);
+  const [spotifyAccount, setSpotifyAccount] = useState(null);
+  const [steamAccount, setSteamAccount] = useState(null);
+  const [riotAccount, setRiotAccount] = useState(null);
 
   useEffect(() => {
     fetch("/api/spotify-top")
       .then((r) => r.json())
-      .then((d) => setTopArtists(d.error ? ["(unavailable)"] : d.artists.map((a) => a.name)))
+      .then((d) => {
+        setTopArtists(d.error ? ["(unavailable)"] : alignList(d.artists, (a) => (a.hours != null ? `${a.hours}h` : `${a.tracks} tracks`)));
+        setSpotifyAccount(d.account || null);
+      })
       .catch(() => setTopArtists(["(unavailable)"]));
+
+    fetch("/api/steam-recent")
+      .then((r) => r.json())
+      .then((d) => {
+        setRecentGames(d.error ? ["(unavailable)"] : d.games.map((g) => g.name));
+        setSteamAccount(d.account || null);
+      })
+      .catch(() => setRecentGames(["(unavailable)"]));
+
+    fetch("/api/riot-recent")
+      .then((r) => r.json())
+      .then((d) => {
+        setRecentChamps(d.error ? ["(unavailable)"] : alignList(d.champions, (c) => `${Math.round(c.points / 1000)}k pts`));
+        setRiotAccount(d.account || null);
+      })
+      .catch(() => setRecentChamps(["(unavailable)"]));
   }, []);
 
   return (
@@ -43,20 +68,65 @@ export default function AboutPage() {
               <span className="desktop-line"> </span>
               <span className="desktop-line">german   {"██████████"}  C2</span>
               <span className="desktop-line">english  {"████████░░"}  C1</span>
-              <span className="desktop-line">french   {"█████░░░░░"}  B1</span>
+              <span className="desktop-line">french   {"███████░░░"}  B2</span>
             </pre>
           </div>
         </section>
 
-        <section className="desktop-window desktop-window--about-spotify" aria-hidden="true">
+        <section className="desktop-window desktop-window--about-spotify">
           <div className="desktop-header">
             <span className="desktop-title">spotify.txt</span>
           </div>
           <div className="desktop-body">
             <pre>
               <span className="desktop-line text-green">## top artists this month</span>
+              {spotifyAccount && (
+                <span className="desktop-line">
+                  account: <a className="desktop-link" href={spotifyAccount.url} target="_blank" rel="noopener noreferrer">{spotifyAccount.name}</a>
+                </span>
+              )}
               <span className="desktop-line"> </span>
               {topArtists.map((line, i) => (
+                <span key={i} className="desktop-line">{i + 1}. {line}</span>
+              ))}
+            </pre>
+          </div>
+        </section>
+
+        <section className="desktop-window desktop-window--about-steam">
+          <div className="desktop-header">
+            <span className="desktop-title">steam.txt</span>
+          </div>
+          <div className="desktop-body">
+            <pre>
+              <span className="desktop-line text-green">## last 5 games played</span>
+              {steamAccount && (
+                <span className="desktop-line">
+                  account: <a className="desktop-link" href={steamAccount.url} target="_blank" rel="noopener noreferrer">{steamAccount.name}</a>
+                </span>
+              )}
+              <span className="desktop-line"> </span>
+              {recentGames.map((line, i) => (
+                <span key={i} className="desktop-line">{i + 1}. {line}</span>
+              ))}
+            </pre>
+          </div>
+        </section>
+
+        <section className="desktop-window desktop-window--about-riot">
+          <div className="desktop-header">
+            <span className="desktop-title">league-of-legends.txt</span>
+          </div>
+          <div className="desktop-body">
+            <pre>
+              <span className="desktop-line text-green">## top champion masteries</span>
+              {riotAccount && (
+                <span className="desktop-line">
+                  account: <a className="desktop-link" href={riotAccount.url} target="_blank" rel="noopener noreferrer">{riotAccount.name}</a>
+                </span>
+              )}
+              <span className="desktop-line"> </span>
+              {recentChamps.map((line, i) => (
                 <span key={i} className="desktop-line">{i + 1}. {line}</span>
               ))}
             </pre>

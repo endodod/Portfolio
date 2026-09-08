@@ -41,15 +41,17 @@ export default function ProjectModal({ project, onClose }) {
             <span className="about-value">{project.description}</span>
           </div>
 
-          <div className="about-field proj-modal-field--tags">
-            <span className="about-key">stack</span>
-            <span className="about-sep">:</span>
-            <span className="about-value">
-              {project.stack.map((t) => (
-                <span className="about-tag" key={t}>{t}</span>
-              ))}
-            </span>
-          </div>
+          {project.stack?.length > 0 && (
+            <div className="about-field proj-modal-field--tags">
+              <span className="about-key">stack</span>
+              <span className="about-sep">:</span>
+              <span className="about-value">
+                {project.stack.map((t) => (
+                  <span className="about-tag" key={t}>{t}</span>
+                ))}
+              </span>
+            </div>
+          )}
 
           {project.repos ? (
             project.repos.map((r) => (
@@ -66,7 +68,7 @@ export default function ProjectModal({ project, onClose }) {
                 </a>
               </div>
             ))
-          ) : (
+          ) : project.github ? (
             <div className="about-field">
               <span className="about-key">github</span>
               <span className="about-sep">:</span>
@@ -78,6 +80,12 @@ export default function ProjectModal({ project, onClose }) {
               >
                 {project.github}
               </a>
+            </div>
+          ) : (
+            <div className="about-field">
+              <span className="about-key">github</span>
+              <span className="about-sep">:</span>
+              <span className="about-value about-value--muted">coming soon</span>
             </div>
           )}
 

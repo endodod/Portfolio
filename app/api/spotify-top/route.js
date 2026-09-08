@@ -1,8 +1,11 @@
 import { NextResponse } from "next/server";
+import { getLastGood, setLastGood } from "@/lib/lastGoodCache";
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN;
+const STATSFM_USER_ID = process.env.STATSFM_USER_ID;
+const CACHE_KEY = "spotify-top";
 
 async function getAccessToken() {
   const basic = Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString("base64");
@@ -40,15 +43,75 @@ export async function GET() {
 
     const artistsData = await artistsRes.json();
 
+    const trackCounts = new Map();
+    const tracksRes = await fetch(
+      "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=50",
+      { headers, next: { revalidate: 3600 } }
+    );
+    if (tracksRes.ok) {
+      const tracksData = await tracksRes.json();
+      for (const track of tracksData.items || []) {
+        for (const artist of track.artists || []) {
+          trackCounts.set(artist.id, (trackCounts.get(artist.id) || 0) + 1);
+        }
+      }
+    }
+
     const artists = (artistsData.items || []).map((artist) => ({
+      id: artist.id,
       name: artist.name,
       url: artist.external_urls?.spotify || null,
+      tracks: trackCounts.get(artist.id) || 0,
     }));
 
-    if (!artists.length) return NextResponse.json({ error: true });
+    if (!artists.length) throw new Error("no top artists");
 
-    return NextResponse.json({ artists });
+    if (STATSFM_USER_ID) {
+      try {
+        const thirtyDaysAgoMs = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        const statsfmRes = await fetch(
+          `https://api.stats.fm/api/v1/users/${encodeURIComponent(STATSFM_USER_ID)}/top/artists?after=${thirtyDaysAgoMs}`,
+          { next: { revalidate: 3600 } }
+        );
+        if (statsfmRes.ok) {
+          const statsfmData = await statsfmRes.json();
+          const msBySpotifyId = new Map();
+          for (const item of statsfmData.items || []) {
+            for (const spotifyId of item.artist?.externalIds?.spotify || []) {
+              msBySpotifyId.set(spotifyId, item.playedMs || 0);
+            }
+          }
+          for (const artist of artists) {
+            const ms = msBySpotifyId.get(artist.id);
+            if (ms) artist.hours = Math.round((ms / 3600000) * 10) / 10;
+          }
+        }
+      } catch {
+        // stats.fm unavailable — artists keep their track counts as a fallback
+      }
+    }
+
+    artists.sort((a, b) => (b.hours || 0) - (a.hours || 0) || b.tracks - a.tracks);
+
+    const artistsOut = artists.map(({ id, ...rest }) => rest);
+
+    let account = null;
+    const meRes = await fetch("https://api.spotify.com/v1/me", {
+      headers,
+      next: { revalidate: 3600 },
+    });
+    if (meRes.ok) {
+      const me = await meRes.json();
+      const url = STATSFM_USER_ID
+        ? `https://stats.fm/${encodeURIComponent(STATSFM_USER_ID)}`
+        : me.external_urls?.spotify || null;
+      account = { name: me.display_name || me.id, url };
+    }
+
+    const result = { artists: artistsOut, account };
+    setLastGood(CACHE_KEY, result);
+    return NextResponse.json(result);
   } catch {
-    return NextResponse.json({ error: true });
+    return NextResponse.json(getLastGood(CACHE_KEY) || { error: true });
   }
 }
