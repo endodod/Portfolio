@@ -59,9 +59,6 @@ export default function Home() {
         {/* Background "desktop" programs */}
         <section className="desktop-window desktop-window--help-console" aria-hidden="true">
           <div className="desktop-header">
-            <span className="desktop-dot desktop-dot--red" />
-            <span className="desktop-dot desktop-dot--yellow" />
-            <span className="desktop-dot desktop-dot--green" />
             <span className="desktop-title">help — paul @ portfolio</span>
           </div>
           <div className="desktop-body desktop-body--console">
