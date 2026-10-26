@@ -10,7 +10,9 @@ const QUICK_COMMANDS = [
 ];
 
 const PROJECT_SECTIONS = [
-  { category: "personal", title: "Personal Projects" },
+  { category: "games", title: "Web Based Games" },
+  { category: "webapp", title: "Web Applications" },
+  { category: "other", title: "Other Projects" },
   { category: "hackathon", title: "Hackathon Projects" },
   { category: "school", title: "School Projects" },
 ];
