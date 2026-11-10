@@ -134,6 +134,18 @@ export const projects = [
     label: "coming soon",
   },
   {
+    name: "Merces Map",
+    icon: "🗺️",
+    dir: "merces-map/",
+    description: "Unofficial interactive maps for HITMAN World of Assassination's Freelancer mode with item, stash and disguise layers",
+    stack: ["React", "TypeScript", "Vite", "Leaflet", "HITMAPS API"],
+    category: "webapp",
+    github: "github.com/endodod/merces-map",
+    githubUrl: "https://github.com/endodod/merces-map",
+    live: "coming soon",
+    label: "coming soon",
+  },
+  {
     name: "SAP",
     icon: "🐾",
     dir: "sap/",
