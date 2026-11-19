@@ -1,4 +1,5 @@
 import "./globals.css";
+import Script from "next/script";
 import ScaleInit from "@/components/ScaleInit";
 
 export const metadata = {
@@ -15,9 +16,9 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: `
+        <Script id="apply-scale" strategy="beforeInteractive">{`
           (function() {
             function applyScale() {
               var baseWidth = 1485;
@@ -29,9 +30,9 @@ export default function RootLayout({ children }) {
             applyScale();
             window.addEventListener('resize', applyScale);
           })();
-        `}} />
+        `}</Script>
       </head>
-      <body className="app-body">
+      <body className="app-body" suppressHydrationWarning>
         <ScaleInit />
         {children}
       </body>

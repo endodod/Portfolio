@@ -26,15 +26,16 @@ const QUICK_COMMANDS = [
 ];
 
 export default function Home() {
-  const [now, setNow] = useState(() => new Date());
-  const time = now.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-  const date = now.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
-  const calMonth = now.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
-  const calCells = buildCalendarCells(now);
+  const [now, setNow] = useState(null);
+  const time = now?.toLocaleTimeString("de-CH", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const date = now?.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+  const calMonth = now?.toLocaleDateString("en-GB", { month: "long", year: "numeric" });
+  const calCells = now ? buildCalendarCells(now) : [];
   const [gitLog, setGitLog] = useState(["loading..."]);
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
+    setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
