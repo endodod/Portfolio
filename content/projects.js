@@ -207,4 +207,17 @@ export const projects = [
     githubUrl: "https://github.com/endodod/guesslock",
     live: "coming soon",
     label: "coming soon",
+  },
+  {
+    name: "Lolster",
+    icon: "🕵️",
+    dir: "lolster/",
+    description: "Imposter party game with League of Legends and Deadlock words, playable pass & play or online in lobbies",
+    stack: ["Preact", "TypeScript", "Vite", "PartyServer", "Cloudflare Workers", "Vercel"],
+    category: "games",
+    github: "github.com/endodod/lolster",
+    githubUrl: "https://github.com/endodod/lolster",
+    live: "lolster.vercel.app",
+    liveUrl: "https://lolster.vercel.app",
+    label: "live",
   },];
