@@ -176,7 +176,7 @@ export const projects = [
     dir: "mydailies/",
     description: "Directory of daily word, logic, knowledge and gaming puzzles",
     stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL"],
-    category: "games",
+    category: "webapp",
     github: "github.com/endodod/MyDailies",
     githubUrl: "https://github.com/endodod/MyDailies",
     live: "mydailies.paulkuehn.ch",
